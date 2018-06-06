@@ -1,0 +1,35 @@
+version: '3'
+services:
+  api:
+    container_name: 'api'
+    build: ./api
+    tty: true
+    volumes:
+      - ./api:/api
+    ports:
+      - 8548:8548
+    environment:
+      - USERNAME=
+      - PASSWORD=
+      - PORT=
+      - NODERPC=
+      - DOMAIN=$BITCOIN_NODE_SUBNET
+    networks:
+      default:
+        ipv4_address: $API_SUBNET
+  
+  bitcoin-node:
+    container_name: 'bitcoin_node'
+    build: ./dbtc
+    ports:
+      - 8332:8332
+    networks:
+      default:
+        ipv4_address: $BITCOIN_NODE_SUBNET
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/24

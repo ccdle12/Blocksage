@@ -1,0 +1,7 @@
+{
+    "username":"USERNAME",
+    "password":"PASSWORD",
+    "port":"PORT",
+    "node-rpc":"NODERPC",
+    "domain":"DOMAIN"
+}
