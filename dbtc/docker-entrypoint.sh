@@ -8,8 +8,8 @@ if [[ "$1" == "bitcoin-cli" || "$1" == "bitcoin-tx" || "$1" == "bitcoind" || "$1
 	cat <<-EOF > "$BITCOIN_DATA/bitcoin.conf"
 maxconnections=12
 maxuploadtarget=20
-rpcuser=${BITCOIN_RPC_USER:}
-rpcpassword=${BITCOIN_RPC_PASSWORD:}
+rpcuser=${BITCOIN_RPC_USER:- }
+rpcpassword=${BITCOIN_RPC_PASSWORD:- }
 server=1
 printtoconsole=1
 rpcallowip=::/0
