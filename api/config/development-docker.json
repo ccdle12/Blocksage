@@ -1,3 +1,6 @@
 {
-    "name": "Bitcoin Node API"
+    "name": "Bitcoin Node API",
+    "port": 8548,
+    "node-rpc": 8332,
+    "domain": "127.0.0.1"
 }
