@@ -1,32 +1,27 @@
 require('dotenv').config()
 const config = require('config')
 const debug = require('debug')('app:network-info')
-const request = require('request')
+
+const bitcoin_request = require('../utils/bitcoin-requests')
 
 const express = require('express')
 const router = express.Router()
 
 router.get('/', (req, res) => {
-    //TODO - Move into own middleware or service
-    console.log(Buffer.from("bitcoin:password").toString('base64'))
-    const options = {
-        url: `http://${config.get('domain')}:${config.get('node-rpc')}`,
-        headers: {
-            Authorization: 'Basic Yml0Y29pbjpwYXNzd29yZA=='
-        },
-        body: JSON.stringify({
-            method: 'getnetworkinfo'
-        })
-    }
-
-    function callback(err, res, body) {
-        if (err)
+    bitcoin_request.send('getnetworkinfo', (err, rpc_res, body) => {
+        if (err) {
+            res.status(500).send()
             debug(`Error: ${err}`)
+        }
         
-        debug(`Body: ${body}`)
-    }
+        const json_body = JSON.parse(body)
+        debug(`Body: ${json_body}`)
 
-    request.post(options, callback)
+        if (json_body.error && json_body.error.code === -32601)
+            res.status(404).send('Method request not found')
+        
+        res.send(body)
+    })
 })
 
 module.exports = router
