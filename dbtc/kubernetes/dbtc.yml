@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bitcoin-svc
+spec:
+  ports:
+    - port: 8333
+      targetPort: 8333
+      protocol: TCP
+  selector:
+    app: bitcoin
+----
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bitcoin
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bitcoin
+    spec:
+      containers:
+      - name: bitcoin
+        image: ccdle12/dbtc:latest
+        env:
+        - name: BITCOIN_RPC_USER
+          valueFrom:
+            secretKeyRef:
+              name: bitcoin-secret
+              key: rpcuser
+        - name: BITCOIN_RPC_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: bitcoin-secret
+              key: rpcpass
+        volumeMounts:
+          - mountPath: /data
+            name: bitcoin-data
+        resources:
+          requests:
+            memory: "2Gi"
+      restartPolicy: Always
+      volumes:
+        - name: bitcoin-data
+          gcePersistentDisk:
+            pdName: bitcoin-data
+            fsType: ext4
