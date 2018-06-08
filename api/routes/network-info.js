@@ -10,8 +10,8 @@ const router = express.Router()
 router.get('/', (req, res) => {
     bitcoin_request.send('getnetworkinfo', (err, rpc_res, body) => {
         if (err) {
-            res.status(500).send()
             debug(`Error: ${err}`)
+            res.status(500).send()
         }
         
         const json_body = JSON.parse(body)
