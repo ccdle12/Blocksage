@@ -11,8 +11,6 @@ services:
     environment:
       - USERNAME=
       - PASSWORD=
-      - PORT=
-      - NODERPC=
       - DOMAIN=$BITCOIN_NODE_SUBNET
     networks:
       default:
