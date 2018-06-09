@@ -2,7 +2,7 @@ require('dotenv').config()
 const config = require('config')
 
 const request = require('request')
-const base64_auth = require('./utils/base64-auth')
+const base64_auth = require('./base64-auth')
 
 module.exports.send = (method_request, callback) => { 
     const options = {
