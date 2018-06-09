@@ -11,15 +11,18 @@ router.get('/', (req, res) => {
     bitcoin_request.send('getnetworkinfo', (err, rpc_res, body) => {
         if (err) {
             debug(`Error: ${err}`)
-            res.status(500).send()
+            res.status(502).send('Bad Gateway - Node unresponsive')
+            return
         }
         
         const json_body = JSON.parse(body)
         debug(`Body: ${json_body}`)
 
-        if (json_body.error && json_body.error.code === -32601)
+        if (json_body.error && json_body.error.code === -32601) {
             res.status(404).send('Method request not found')
-        
+            return
+        }
+
         res.send(body)
     })
 })
