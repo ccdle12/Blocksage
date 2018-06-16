@@ -1,4 +1,5 @@
 const base64_auth = require('../utils/base64-auth')
+const debug = require('debug')('app:base64-auth-test')
 
 describe('base64Auth', () =>
 {
