@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: bitcoin-node-pv
+spec:
+  storageClassName: bitcoin-node-pv
+  capacity:
+    storage: 400G
+  accessModes:
+    - ReadWriteOnce
+  gcePersistentDisk:
+    pdName: bitcoin-node-pv
+    fsType: ext4
