@@ -10,7 +10,7 @@ const router = express.Router()
 
 router.get('/', (req, res) =>
 {
-    bitcoin_request.send('getnetworkinfo', (err, rpc_res, body) =>
+    bitcoin_request.send('getnetworkinfo', [], (err, rpc_res, body) =>
     {
         const { status_code, message } = validate_response(err, body)
         debug(`Status: ${status_code.toString()}\n Message: ${message}`)
