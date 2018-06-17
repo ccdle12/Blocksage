@@ -40,7 +40,15 @@ describe('validate-response-errors', () =>
 
     it('should return 404 - Block not found', () =>
     {
-        const body = JSON.stringify(create_error_body("Block Not Found", -5))
+        const body = JSON.stringify(create_error_body("Invalid address or key - ", -5))
+
+        const { status_code, message } = validate_response(body)
+        expect(status_code).toEqual(404)
+    })
+
+    it('should return 404 - Invalid Parameter - ', () =>
+    {
+        const body = JSON.stringify(create_error_body("Invalid Parameter - ", -8))
         
         const { status_code, message } = validate_response(body)
         expect(status_code).toEqual(404)
