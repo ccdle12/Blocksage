@@ -10,28 +10,28 @@ const router = express.Router()
 
 router.get('/:txhash', (req, res) =>
 {
-    debug(`Tx Hash: ${req.params.txhash}`) 
+    (async () => {
+        debug(`Tx Hash: ${req.params.txhash}`)
 
-    bitcoin_request.send('getrawtransaction', [req.params.txhash], (err, rpc_res, body) =>
-    {
-        const { status_code, message } = validate_response(err, body)
+        let raw_tx_body = await bitcoin_request.send('getrawtransaction', [req.params.txhash])
+        debug(`Raw Tx Body: ${raw_tx_body}`)
 
-        if (status_code !== 200)
-            return res.status(status_code).send(message)
+        let { status_code, message } = validate_response(raw_tx_body)
+        debug(`Status Code from getrawtransaction: ${status_code}`)
 
-        const raw_tx = JSON.parse(body)['result']
-        debug(`Raw Tx: ${raw_tx}`)
+        if (status_code !== 200) return res.status(status_code).send(`${message} incorrect tx hash or is not hex`)
 
-        bitcoin_request.send('decoderawtransaction', [raw_tx], (err, rpc_res, body) => 
-        {
-            const { status_code, message } = validate_response(err, body)
+        const raw_tx = JSON.parse(raw_tx_body)['result']
 
-            if (status_code !== 200)
-                return res.status(status_code).send(message)
+        let decoded_tx_body = await bitcoin_request.send('decoderawtransaction', [raw_tx])
+        debug(`decoded tx: ${decoded_tx_body}`)
 
-            res.send(body)
-        })
-    })
+        status_code, message = validate_response(decoded_tx_body)
+
+        if (status_code !== 200) return res.status(decoded_tx_status_code).send(decoded_tx_message)
+
+        res.send(decoded_tx_body)
+    })()
 })
 
 module.exports = router
