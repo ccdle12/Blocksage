@@ -10,17 +10,18 @@ const router = express.Router()
 
 router.get('/:block_hash', (req, res) =>
 {
-    debug(`Block: ${req.params.block_hash}`) 
+    (async () => {
+        debug(`Block Hash: ${req.params.block_hash}`)
 
-    bitcoin_request.send('getblock', [req.params.block_hash], (err, rpc_res, body) =>
-    {
-        const { status_code, message } = validate_response(err, body)
+        let body = await bitcoin_request.send('getblock', [req.params.block_hash])
 
-        if (status_code !== 200)
-            return res.status(status_code).send(message)
+        const { status_code, message } = validate_response(body)
+        debug(`Status Code: ${status_code}`)
+
+        if (status_code !== 200) return res.status(status_code).send(`${message} Block not found or block hash is incorrect`)
 
         res.send(body)
-    })
+    })()
 })
 
 module.exports = router
