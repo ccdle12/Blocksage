@@ -5,7 +5,7 @@ const debug = require('debug')('app:bitcoin-requests')
 const request = require('request')
 const base64_auth = require('../utils/base64-auth')
 
-module.exports.send = (method_request, args, callback) =>
+module.exports.send = (method_request, args) =>
 { 
     debug(`http://${config.get('domain')}:${config.get('node-rpc')}`)
     debug(`Authorization Basic ${base64_auth.getEncodedAuth()}`)
@@ -21,6 +21,24 @@ module.exports.send = (method_request, args, callback) =>
             params: args
         })
     }
-    
-    request.post(options, callback)
+
+    return new Promise((resolve, reject) => {
+        request.post(options, (err, res, body) => {
+            if (err) 
+            {
+                debug(`Request Err: ${err}`)
+                return resolve(JSON.stringify({
+                    "result": null,
+                    "error": {
+                        "code": 502,
+                        "message": "Bad Gateway - Node Unresponsive"
+                    },
+                    "id": null
+                }))
+            }
+
+            debug(`Request Body: ${body}`)
+            return resolve(body)
+        })
+    })
 }
