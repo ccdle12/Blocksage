@@ -10,19 +10,16 @@ const router = express.Router()
 
 router.get('/', (req, res) =>
 {
-    bitcoin_request.send('getnetworkinfo', [], (err, rpc_res, body) =>
-    {
-        const { status_code, message } = validate_response(err, body)
-        debug(`Status: ${status_code.toString()}\n Message: ${message}`)
+    (async () => {
+        let body = await bitcoin_request.send('getnetworkinfo', [])
 
-        if (status_code !== 200)
-        {
-            res.status(status_code).send(message)
-            return
-        }
+        const { status_code, message } = validate_response(body)
+        debug(`Status Code: ${status_code}`)
+
+        if (status_code !== 200) return res.status(status_code).send(message)
 
         res.send(body)
-    })
+    })()
 })
 
 module.exports = router
