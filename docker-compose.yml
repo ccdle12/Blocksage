@@ -11,7 +11,7 @@ services:
     environment:
       - USERNAME=
       - PASSWORD=
-      - DOMAIN=$BITCOIN_NODE_SUBNET
+      - DOMAIN=$BITCOIN_NODE_EXTERNAL
     networks:
       default:
         ipv4_address: $API_SUBNET
