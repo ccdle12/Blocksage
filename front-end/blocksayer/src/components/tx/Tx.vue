@@ -4,6 +4,18 @@
 
 <script>
 export default {
+    /** Member variables */
+    data: function() {
+        return {
+            txHash: 0
+        }
+    },
+
+    /** Life cycle hooks */
+    created: function() {
+        this.txHash = this.$route.params.txHash
+    },
+
 } // export default
 </script>
 

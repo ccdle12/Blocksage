@@ -3,5 +3,5 @@ import Tx from './components/tx/Tx.vue'
 
 export const routes = [
     { path: '', component: Home },
-    { path: '/tx', component: Tx } 
+    { path: '/tx/:txHash', component: Tx, name: 'tx' }
 ]
