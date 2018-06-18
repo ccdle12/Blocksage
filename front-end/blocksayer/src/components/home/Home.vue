@@ -1,4 +1,5 @@
 <template>
+
   <div>
     {{ title }}
 
@@ -11,8 +12,8 @@
 
     <!-- Error Message -->
     <span v-if="invalidSearch"> Invalid Search </span>
-
   </div>
+
 </template>
 
 <script>
