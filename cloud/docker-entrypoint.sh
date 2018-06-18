@@ -2,7 +2,6 @@
 set -e
 
 if [[ "$1" == "bitcoin-cli" || "$1" == "bitcoin-tx" || "$1" == "bitcoind" || "$1" == "test_bitcoin" ]]; then
-    mkdir -p "$BITCOIN_DATA"
 
     if [[ ! -s "$BITCOIN_DATA/bitcoin.conf" ]]; then
 	cat <<-EOF > "$BITCOIN_DATA/bitcoin.conf"
