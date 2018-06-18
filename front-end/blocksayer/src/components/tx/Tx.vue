@@ -14,7 +14,17 @@ export default {
     /** Life cycle hooks */
     created: function() {
         this.txHash = this.$route.params.txHash
+        this.getTx()
     },
+
+    methods: {
+        getTx: function() {
+            this.$http.get('http://localhost:8548/api/network-info')
+                .then((res) => {
+                    alert(res)
+                })
+        }
+    }
 
 } // export default
 </script>
