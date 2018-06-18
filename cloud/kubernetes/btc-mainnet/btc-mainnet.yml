@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: bitcoin
+  name: btc-mainnet
   labels:
-    app: dbtc
+    app: blocksayer
 spec:
   ports:
     - name: rpc
@@ -13,18 +13,18 @@ spec:
       port: 8333
       targetPort: 8333
   selector:
-    app: dbtc
+    app: blocksayer
   type: LoadBalancer
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: bitcoin-node-pvc
+  name: btc-mainnet-pv
 spec:
 # It's necessary to specify "" as the storageClassName
 # so that the default storage class won't be used, see
 # https://kubernetes.io/docs/concepts/storage/persistent-volumes/#class-1
-  storageClassName: bitcoin-node-pv
+  storageClassName: btc-mainnet-pv
   accessModes:
     - ReadWriteOnce
   resources:
@@ -34,29 +34,29 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: bitcoin
+  name: btc-mainnet
   labels:
-    app: bitcoin-node
+    app: blocksayer
 spec:
   selector:
     matchLabels:
-      app: dbtc
-      tier: bitcoin-node
+      app: blocksayer
+      tier: btc-mainnet
   strategy:
     type: Recreate
   replicas: 1
   template:
     metadata:
       labels:
-        app: dbtc
-        tier: bitcoin-node
+        app: blocksayer
+        tier: btc-mainnet
     spec:
       containers:
-      - name: bitcoin-node
-        image: ccdle12/dbtc:v0.0.4
+      - name: btc-mainnet
+        image: ccdle12/dbtc:v0.0.6
         ports:
         - containerPort: 8332
-          name: bitcoin-node
+          name: btc-mainnet
         env:
         - name: BITCOIN_RPC_USER
           valueFrom:
@@ -70,15 +70,11 @@ spec:
               key: rpcpass
         volumeMounts:
           - mountPath: /data
-            name: bitcoin-node-pv
-        resources:
-          requests:
-            memory: "2Gi"
+            name: btc-mainnet-pv
         command: ["/bin/sh"]
         args: ["-c", "bitcoind --datadir=./data"]
-      restartPolicy: Always
       volumes:
-        - name: bitcoin-node-pv
+        - name: btc-mainnet-pv
           gcePersistentDisk:
-            pdName: bitcoin-node-pv
+            pdName: btc-mainnet-pv
             fsType: ext4
