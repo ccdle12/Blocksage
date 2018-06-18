@@ -9,6 +9,7 @@ const address = require('./routes/address')
 const blocks = require('./routes/blocks')
 const transactions = require('./routes/transactions')
 const network_info = require('./routes/network-info')
+const cors = require('cors')
 
 const app = express()
 
@@ -18,6 +19,7 @@ if (app.get('env') === 'development-docker') {
 }
 
 app.use(express.json())
+app.use(cors({origin: 'http://localhost:8080'}))
 app.use('/api/address', address)
 app.use('/api/blocks', blocks)
 app.use('/api/txs', transactions)
