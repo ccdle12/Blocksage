@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bitcoin
+  labels:
+    app: dbtc
+spec:
+  ports:
+    - name: rpc
+      port: 8332
+      targetPort: 8332
+    - name: p2p
+      port: 8333
+      targetPort: 8333
+  selector:
+    app: dbtc
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bitcoin-node-pvc
+spec:
+# It's necessary to specify "" as the storageClassName
+# so that the default storage class won't be used, see
+# https://kubernetes.io/docs/concepts/storage/persistent-volumes/#class-1
+  storageClassName: bitcoin-node-pv
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 400G
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bitcoin
+  labels:
+    app: bitcoin-node
+spec:
+  selector:
+    matchLabels:
+      app: dbtc
+      tier: bitcoin-node
+  strategy:
+    type: Recreate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dbtc
+        tier: bitcoin-node
+    spec:
+      containers:
+      - name: bitcoin-node
+        image: ccdle12/dbtc:v0.0.4
+        ports:
+        - containerPort: 8332
+          name: bitcoin-node
+        env:
+        - name: BITCOIN_RPC_USER
+          valueFrom:
+            secretKeyRef:
+              name: bitcoin-secret
+              key: rpcuser
+        - name: BITCOIN_RPC_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: bitcoin-secret
+              key: rpcpass
+        volumeMounts:
+          - mountPath: /data
+            name: bitcoin-node-pv
+        resources:
+          requests:
+            memory: "2Gi"
+        command: ["/bin/sh"]
+        args: ["-c", "bitcoind --datadir=./data"]
+      restartPolicy: Always
+      volumes:
+        - name: bitcoin-node-pv
+          gcePersistentDisk:
+            pdName: bitcoin-node-pv
+            fsType: ext4
