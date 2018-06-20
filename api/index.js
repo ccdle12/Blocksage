@@ -15,11 +15,11 @@ const app = express()
 
 if (app.get('env') === 'development-docker') {
     app.use(morgan('tiny'))
+    app.use(cors({origin: `http://${config.get('domain')}:${config.get('front-end-port')}`}))
     debug("Morgan Enabled...")
 }
 
 app.use(express.json())
-app.use(cors({origin: 'http://localhost:8080'}))
 app.use('/api/address', address)
 app.use('/api/blocks', blocks)
 app.use('/api/txs', transactions)

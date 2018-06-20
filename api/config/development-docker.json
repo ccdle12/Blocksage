@@ -2,5 +2,6 @@
     "name": "Bitcoin Node API",
     "port": 8548,
     "node-rpc": 8332,
+    "front-end-port": 8080,
     "domain": "127.0.0.1"
 }
