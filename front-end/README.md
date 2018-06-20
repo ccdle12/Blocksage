@@ -1,7 +1,11 @@
 # Blocksayer Front End
 
-## Run
+## Install Dependencies
+```
+$ npm i
+```
 
+## Run
 ```
 $ npm run serve
 ```
