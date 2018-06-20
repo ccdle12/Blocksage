@@ -18,7 +18,8 @@ router.get('/:block_hash', (req, res) =>
         const { status_code, message } = validate_response(body)
         debug(`Status Code: ${status_code}`)
 
-        if (status_code !== 200) return res.status(status_code).send(`${message} Block not found or block hash is incorrect`)
+        if (status_code !== 200) 
+            return res.status(status_code).send(`${message} Block not found or block hash is incorrect`)
 
         res.send(body)
     })()

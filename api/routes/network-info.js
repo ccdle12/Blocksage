@@ -16,7 +16,8 @@ router.get('/', (req, res) =>
         const { status_code, message } = validate_response(body)
         debug(`Status Code: ${status_code}`)
 
-        if (status_code !== 200) return res.status(status_code).send(message)
+        if (status_code !== 200) 
+            return res.status(status_code).send(message)
 
         res.send(body)
     })()

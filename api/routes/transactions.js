@@ -19,7 +19,8 @@ router.get('/:txhash', (req, res) =>
         let { status_code, message } = validate_response(raw_tx_body)
         debug(`Status Code from getrawtransaction: ${status_code}`)
 
-        if (status_code !== 200) return res.status(status_code).send(`${message} incorrect tx hash or is not hex`)
+        if (status_code !== 200) 
+            return res.status(status_code).send(`${message} incorrect tx hash or is not hex`)
 
         const raw_tx = JSON.parse(raw_tx_body)['result']
 
@@ -28,7 +29,8 @@ router.get('/:txhash', (req, res) =>
 
         status_code, message = validate_response(decoded_tx_body)
 
-        if (status_code !== 200) return res.status(decoded_tx_status_code).send(decoded_tx_message)
+        if (status_code !== 200) 
+            return res.status(decoded_tx_status_code).send(decoded_tx_message)
 
         res.send(decoded_tx_body)
     })()
