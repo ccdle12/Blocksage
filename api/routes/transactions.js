@@ -1,5 +1,4 @@
 require('dotenv').config()
-const config = require('config')
 const debug = require('debug')('app:transactions')
 
 const bitcoin_request = require('../bitcoin-node/bitcoin-requests')
