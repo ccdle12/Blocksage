@@ -13,9 +13,9 @@ const cors = require('cors')
 
 const app = express()
 
-if (app.get('env') === 'development-docker') {
+if (app.get('env') === 'development') {
     app.use(morgan('tiny'))
-    app.use(cors({origin: `http://${config.get('domain')}:${config.get('front-end-port')}`}))
+    app.use(cors({origin: `http://${config.get('front-end-domain')}:${config.get('front-end-port')}`}))
     debug("Morgan Enabled...")
 }
 

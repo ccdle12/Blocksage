@@ -7,12 +7,12 @@ const base64_auth = require('../utils/base64-auth')
 
 module.exports.send = (method_request, args) =>
 { 
-    debug(`http://${config.get('domain')}:${config.get('node-rpc')}`)
+    debug(`http://${config.get('btc-mainnet-domain')}:${config.get('node-rpc')}`)
     debug(`Authorization Basic ${base64_auth.getEncodedAuth()}`)
 
     const options =
     {
-        url: `http://${config.get('domain')}:${config.get('node-rpc')}`,
+        url: `http://${config.get('btc-mainnet-domain')}:${config.get('node-rpc')}`,
         headers: {
             Authorization: `Basic ${base64_auth.getEncodedAuth()}`
         },

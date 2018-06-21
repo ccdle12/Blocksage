@@ -1,8 +1,8 @@
 require('dotenv').config()
 const debug = require('debug')('app:transactions')
 
-const bitcoin_request = require('../bitcoin-node/bitcoin-requests')
-const validate_response = require('../bitcoin-node/validate-response')
+const bitcoin_request = require('../bitcoin-nodes/bitcoin-requests')
+const validate_response = require('../bitcoin-nodes/validate-response')
 
 const express = require('express')
 const router = express.Router()
