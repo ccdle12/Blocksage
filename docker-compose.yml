@@ -18,7 +18,7 @@ services:
   
   bitcoin-node:
     container_name: 'bitcoin_node'
-    build: ./dbtc
+    build: ./cloud
     ports:
       - 8332:8332
     networks:
