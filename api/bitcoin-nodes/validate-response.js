@@ -2,6 +2,7 @@ const debug = require('debug')('app:validate-response')
 
 module.exports = (body) =>
 {
+    debug(`Body before parse: ${body}`)
     const json_body = JSON.parse(body)
     debug(`JSON Body: ${json_body.error}`)
 
