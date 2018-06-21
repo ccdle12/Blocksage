@@ -21,7 +21,7 @@ export default {
   /** Member Variables */
   data: function() {
     return {
-      title: 'Blocksayer',
+      title: 'Blocksage',
       searchValue: '',
       invalidSearch: false
     }

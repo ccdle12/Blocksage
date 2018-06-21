@@ -1,4 +1,4 @@
-# blocksayer
+# blocksage
 
 > A Bitcoin Block Explorer
 
