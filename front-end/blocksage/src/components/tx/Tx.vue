@@ -1,37 +1,41 @@
 <template>
-
   <div>
     <h1>TX PAGE</h1>
     {{ retrievedTx }}
   </div>
-
 </template>
 
 <script>
+import btcApiService from '../bitcoin-mainnet/BTCAPIService'
+
 export default {
-    /** Member variables */
-    data: function() {
-        return {
-            txHash: 0,
-            retrievedTx: 'No Tx Data'
-        }
-    },
-
-    /** Life cycle hooks */
-    created: function() {
-        this.txHash = this.$route.params.txHash
-        this.getTx()
-    },
-
-    methods: {
-        getTx: function() {
-            this.$http.get(`http://localhost:8548/api/txs/${this.txHash}`)
-                .then((res) => {
-                    this.retrievedTx = res.body.result
-                })
-        }
+  data: function() {
+    return {
+      retrievedTx: ''
     }
+  },
 
+  created: function() {
+    this.getTx(this.$route.params.txHash)
+  },
+
+  methods: {
+    getTx: function(txHash) {
+      btcApiService
+        .getTx(txHash)
+        .then(response => this.retrievedTx = response.data)
+        .catch(error => {
+        if (error.response) {
+          this.retrievedTx = error.response.data
+        } else if (error.request) {
+          console.log('Error reqest: ', error.request);
+          this.retrievedTx = 'Something went wrong, there was no response'
+        } else {
+          return error.message
+        }
+      })
+    }
+  }
 } // export default
 </script>
 
