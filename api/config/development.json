@@ -3,6 +3,5 @@
     "port": 8548,
     "node-rpc": 8332,
     "front-end-port": 8080,
-    "front-end-domain": "localhost",
-    "btc-mainnet-domain": "127.0.0.1"
+    "front-end-domain": "localhost"
 }
