@@ -18,7 +18,6 @@
 
 <script>
 export default {
-  /** Member Variables */
   data: function() {
     return {
       title: 'Blocksage',
