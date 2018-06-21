@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: btc-mainnet
   labels:
-    app: blocksayer
+    app: blocksage
 spec:
   ports:
     - name: rpc
@@ -13,7 +13,7 @@ spec:
       port: 8333
       targetPort: 8333
   selector:
-    app: blocksayer
+    app: blocksage
   type: LoadBalancer
 ---
 apiVersion: v1
@@ -36,11 +36,11 @@ kind: Deployment
 metadata:
   name: btc-mainnet
   labels:
-    app: blocksayer
+    app: blocksage
 spec:
   selector:
     matchLabels:
-      app: blocksayer
+      app: blocksage
       tier: btc-mainnet
   strategy:
     type: Recreate
@@ -48,12 +48,12 @@ spec:
   template:
     metadata:
       labels:
-        app: blocksayer
+        app: blocksage
         tier: btc-mainnet
     spec:
       containers:
       - name: btc-mainnet
-        image: ccdle12/dbtc:v0.0.6
+        image: ccdle12/btc-mainnet-node:v0.0.0
         ports:
         - containerPort: 8332
           name: btc-mainnet
@@ -61,12 +61,12 @@ spec:
         - name: BITCOIN_RPC_USER
           valueFrom:
             secretKeyRef:
-              name: bitcoin-secret
+              name: btc-mainnet-secret
               key: rpcuser
         - name: BITCOIN_RPC_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: bitcoin-secret
+              name: btc-mainnet-secret
               key: rpcpass
         volumeMounts:
           - mountPath: /data
