@@ -12,7 +12,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "vue": "^2.5.2"
+    "axios": "^0.18.0",
+    "vue": "^2.5.2",
+    "vue-axios": "^2.1.1",
+    "vue-resource": "^1.5.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -48,7 +51,6 @@
     "shelljs": "^0.7.6",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.5.8",
-    "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
     "vue-jest": "^1.0.2",
     "vue-loader": "^13.3.0",
