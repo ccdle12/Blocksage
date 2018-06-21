@@ -3,5 +3,5 @@
     "password":"PASSWORD",
     "port":"PORT",
     "node-rpc":"NODERPC",
-    "domain":"DOMAIN"
+    "btc-mainnet-domain":"BTC_MAINNET_DOMAIN"
 }
