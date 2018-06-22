@@ -6,7 +6,6 @@ import VueAxios from 'vue-axios'
 import { routes } from './routes'
 
 Vue.config.productionTip = process.env.NODE_ENV === 'development'
-console.log('Main js: ', process.env.API_BASE_URL)
 Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
 
