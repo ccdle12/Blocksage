@@ -1,15 +1,12 @@
 package bitcoinclient
 
-//HIGH LEVEL TODO:
-// How will we handle failures?
-// 1. Handle all the errors from validate-response.js
-
 import (
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 )
 
 // BitcoinRPC describes an expected set of behaviours to create/send requests and create a body
@@ -24,6 +21,11 @@ type bitcoinRPC interface {
 type methodBody struct {
 	Method string `json:"method"`
 }
+
+var (
+	username = os.Getenv("USERNAME")
+	password = os.Getenv("PASSWORD")
+)
 
 // createRequest builds a request to send the Bitcoin Node
 func (b *BitcoinClient) createRequest(methodType string) (*http.Request, error) {
@@ -40,8 +42,7 @@ func (b *BitcoinClient) createRequest(methodType string) (*http.Request, error) 
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	// TODO: Use DOTENV
-	req.SetBasicAuth("whitefountain", "asystemofcellsinterlinked416721")
+	req.SetBasicAuth(username, password)
 
 	return req, nil
 }

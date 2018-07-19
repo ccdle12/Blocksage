@@ -1,10 +1,12 @@
 package dependencyinjector
 
 import (
+	"fmt"
 	"github.com/ccdle12/Blocksage/go-api/api"
 	"github.com/ccdle12/Blocksage/go-api/bitcoinclient"
 	"github.com/gorilla/mux"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -12,10 +14,11 @@ import (
 type DependencyInjector struct{}
 
 var (
-	singletonAPI = api.API{
+	btcMainnetDomain = os.Getenv("BTC_MAINNET_DOMAIN_EXTERNAL")
+	singletonAPI     = api.API{
 		BitcoinClient: &bitcoinclient.BitcoinClient{
 			Client:          &http.Client{Timeout: time.Duration(5 * time.Second)},
-			BitcoinNodeAddr: "http://35.194.42.115:8332",
+			BitcoinNodeAddr: fmt.Sprintf("http://%s:8332", btcMainnetDomain),
 		},
 		Router: mux.NewRouter(),
 	}

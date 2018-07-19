@@ -5,15 +5,11 @@ import (
 	"github.com/ccdle12/Blocksage/go-api/dependencyinjector"
 	"log"
 	"net/http"
-	"os"
 )
 
 func main() {
 	injector := dependencyinjector.DependencyInjector{}
 	API := injector.InjectAPI()
-
-	username := os.Getenv("USERNAME")
-	fmt.Println(username)
 
 	API.Router.HandleFunc("/api/network-info", API.NetworkInfo).Methods("GET")
 
