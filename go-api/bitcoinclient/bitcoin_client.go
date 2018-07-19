@@ -12,7 +12,6 @@ import (
 type BitcoinClient struct {
 	Client          *http.Client
 	BitcoinNodeAddr string
-	bitcoinRPC      bitcoinRPC
 }
 
 func init() {

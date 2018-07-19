@@ -10,7 +10,7 @@ import (
 )
 
 // BitcoinRPC describes an expected set of behaviours to create/send requests and create a body
-type bitcoinRPC interface {
+type BitcoinRPC interface {
 	createRequest(s string) (*http.Request, error)
 	createBody(s string) (*bytes.Buffer, error)
 	sendRequest(r *http.Request) (*http.Response, error)
