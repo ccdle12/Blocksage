@@ -10,7 +10,7 @@ services:
     environment:
       - USERNAME=
       - PASSWORD=
-      - BTC_MAINNET_DOMAIN=
+      - BTC_MAIN_DOMAIN=$BTC_MAINNET_DOMAIN_EXTERNAL
     networks:
       default:
         ipv4_address: $API_SUBNET
