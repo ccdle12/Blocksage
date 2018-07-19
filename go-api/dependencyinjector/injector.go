@@ -14,11 +14,11 @@ import (
 type DependencyInjector struct{}
 
 var (
-	btcMainnetDomain = os.Getenv("BTC_MAINNET_DOMAIN_EXTERNAL")
-	singletonAPI     = api.API{
+	btcMainDomain = os.Getenv("BTC_MAIN_DOMAIN")
+	singletonAPI  = api.API{
 		BitcoinClient: &bitcoinclient.BitcoinClient{
 			Client:          &http.Client{Timeout: time.Duration(5 * time.Second)},
-			BitcoinNodeAddr: fmt.Sprintf("http://%s:8332", btcMainnetDomain),
+			BitcoinNodeAddr: fmt.Sprintf("http://%s:8332", btcMainDomain),
 		},
 		Router: mux.NewRouter(),
 	}
