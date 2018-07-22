@@ -1,7 +1,0 @@
-{
-    "name": "Bitcoin Node API - Used for Tests",
-    "username":"bitcoin",
-    "password":"password",
-    "node-rpc": 8332,
-    "domain": "127.0.0.1"
-}

@@ -2,28 +2,26 @@ version: '3'
 services:
   api:
     container_name: 'api'
-    build: ./api
-    tty: true
+    build: ./go-api
     volumes:
-      - ./api:/api
+      - ./go-api:/go/src/github.com/ccdle12/Blocksage/go-api
     ports:
       - 8548:8548
     environment:
-      - USERNAME=
-      - PASSWORD=
-      - BTC_MAINNET_DOMAIN=$BTC_MAINNET_DOMAIN_EXTERNAL
+      - USERNAME=$BTC_MAINNET_USERNAME
+      - PASSWORD=$BTC_MAINNET_PASSWORD
+      - BTC_MAIN_DOMAIN=$BTC_MAINNET_DOMAIN_EXTERNAL
     networks:
       default:
         ipv4_address: $API_SUBNET
   
-  bitcoin-node:
-    container_name: 'bitcoin_node'
-    build: ./cloud
+  front-end:
+    container_name: 'front-end'
+    build: ./front-end/blocksage
+    volumes:
+      - ./front-end/blocksage:/app/blocksage
     ports:
-      - 8332:8332
-    networks:
-      default:
-        ipv4_address: $BITCOIN_NODE_SUBNET
+      - 8080:8080
 
 networks:
   default:

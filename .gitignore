@@ -1,1 +1,2 @@
-/api/node_modules/
+.env
+cloud/bitcoin-node/docker-entrypoint.sh

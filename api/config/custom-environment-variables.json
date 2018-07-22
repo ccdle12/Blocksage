@@ -1,7 +1,0 @@
-{
-    "username":"USERNAME",
-    "password":"PASSWORD",
-    "port":"PORT",
-    "node-rpc":"NODERPC",
-    "btc-mainnet-domain":"BTC_MAINNET_DOMAIN"
-}
