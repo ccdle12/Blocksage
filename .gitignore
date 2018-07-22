@@ -1,1 +1,2 @@
 .env
+cloud/bitcoin-node/docker-entrypoint.sh
