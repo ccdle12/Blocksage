@@ -36,27 +36,14 @@ var (
 	ErrInvalidParameter = errors.New("Input Error: Invalid Parameter")
 )
 
-// RPCBitcoinError is a struct that contains the format for errors when returned by the Bitcoin Node RPC
-type RPCBitcoinError struct {
-	Result *string  `json:"result"`
-	Error  rpcError `json:"error"`
-	ID     *string  `json:"id"`
-}
-
-type rpcError struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-}
-
-// AuthenticateRPCResponse will take in a response string and determine whether there was an internal RPC error
-// or whether there was a failure to authenticate
-func (b *BitcoinClient) AuthenticateRPCResponse(res string) error {
-	authErr := b.checkAuthentication(res)
+// AuthenticateRPCResponse will take a response string and determine whether there was an internal RPC error or a failure to authenticate
+func (b *BitcoinClient) AuthenticateRPCResponse(resStr string) error {
+	authErr := b.checkAuthentication(resStr)
 	if authErr != nil {
 		return authErr
 	}
 
-	err := b.checkRPCErrorCode(res)
+	err := b.checkRPCResponseCode(resStr)
 	if err != nil {
 		return err
 	}
@@ -65,20 +52,21 @@ func (b *BitcoinClient) AuthenticateRPCResponse(res string) error {
 }
 
 // checkAuthentication checks if a response is empty, meaning RPC authentication to the Bitcoin Node has failed
-func (b *BitcoinClient) checkAuthentication(res string) error {
-	if len(res) == 0 {
+func (b *BitcoinClient) checkAuthentication(resStr string) error {
+	if len(resStr) == 0 {
 		return ErrFailedAuthentication
 	}
 
 	return nil
 }
 
-func (b *BitcoinClient) checkRPCErrorCode(res string) error {
-	var rpcError RPCBitcoinError
-	json.Unmarshal([]byte(res), &rpcError)
+// checkRPCResponseCode will check an error type if there is an error in the Response
+func (b *BitcoinClient) checkRPCResponseCode(res string) error {
+	var rpcRes RPCBitcoinResponse
+	json.Unmarshal([]byte(res), &rpcRes)
 
-	if rpcError.Error.Code != 0 {
-		switch rpcError.Error.Code {
+	if rpcRes.Error.Code != 0 {
+		switch rpcRes.Error.Code {
 		case -32601:
 			log.Println(ErrMethodRequestNotFound)
 			return ErrMethodRequestNotFound
@@ -104,8 +92,7 @@ func (b *BitcoinClient) checkRPCErrorCode(res string) error {
 	return nil
 }
 
-// HandleStatusCodeError will check the error returned from the Bitcon Client and
-// update ResponseWriter with the correct status code
+// HandleStatusCodeError will check the error returned from the Bitcon Client and update ResponseWriter with the correct status code
 func (b *BitcoinClient) HandleStatusCodeError(w http.ResponseWriter, err error) http.ResponseWriter {
 	switch err {
 	case ErrUnresponsive:
