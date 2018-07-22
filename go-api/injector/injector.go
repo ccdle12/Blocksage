@@ -1,4 +1,4 @@
-package dependencyinjector
+package injector
 
 import (
 	"fmt"
@@ -15,16 +15,21 @@ type DependencyInjector struct{}
 
 var (
 	btcMainDomain = os.Getenv("BTC_MAIN_DOMAIN")
-	singletonAPI  = api.API{
+	mainnetAPI    = api.API{
 		BitcoinClient: &bitcoinclient.BitcoinClient{
 			Client:          &http.Client{Timeout: time.Duration(5 * time.Second)},
 			BitcoinNodeAddr: fmt.Sprintf("http://%s:8332", btcMainDomain),
 		},
-		Router: mux.NewRouter(),
 	}
+	router = mux.NewRouter()
 )
 
-// InjectAPI will return an initialised API struct
-func (d *DependencyInjector) InjectAPI() *api.API {
-	return &singletonAPI
+// InjectMainnetAPI will return an initialised API struct
+func (d *DependencyInjector) InjectMainnetAPI() *api.API {
+	return &mainnetAPI
+}
+
+// InjectRouter will return the mux Router
+func (d *DependencyInjector) InjectRouter() *mux.Router {
+	return router
 }
