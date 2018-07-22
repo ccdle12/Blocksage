@@ -9,27 +9,34 @@ import (
 	"os"
 )
 
-// BitcoinRPC describes an expected set of behaviours to create/send requests and create a body
-type BitcoinRPC interface {
-	createRequest(s string) (*http.Request, error)
-	createBody(s string) (*bytes.Buffer, error)
-	sendRequest(r *http.Request) (*http.Response, error)
-	convBodyToStr(r *http.Response) (string, error)
+// RPCBody is a struct for the body when sending POST requests to the Bitcoin Node RPC
+type RPCBody struct {
+	Method string   `json:"method"`
+	Params []string `json:"params"`
 }
 
-// methodBody is a struct for the body when sending POST requests to the Bitcoin Node RPC
-type methodBody struct {
-	Method string `json:"method"`
+// RPCBitcoinResponse is a struct that contains the format for returned information from the Bitcoin Node
+type RPCBitcoinResponse struct {
+	Result *string  `json:"result"`
+	Error  rpcError `json:"error"`
+	ID     *string  `json:"id"`
 }
 
+// rpcError is a struct the contains the format for errors returned from the Bitcoin Node
+type rpcError struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}
+
+// TODO: The authentication variables will need to be changed according to testnet and mainnet
 var (
 	username = os.Getenv("USERNAME")
 	password = os.Getenv("PASSWORD")
 )
 
 // createRequest builds a request to send the Bitcoin Node
-func (b *BitcoinClient) createRequest(methodType string) (*http.Request, error) {
-	body, err := b.createBody(methodType)
+func (b *BitcoinClient) createRequest(rpcBody *RPCBody) (*http.Request, error) {
+	body, err := b.createBody(rpcBody)
 	if err != nil {
 		log.Println(ErrCreatingBody)
 		return nil, ErrCreatingBody
@@ -47,10 +54,9 @@ func (b *BitcoinClient) createRequest(methodType string) (*http.Request, error) 
 	return req, nil
 }
 
-// createBody, creates a body specifying the RPC methods to request from the Bitcoin Node
-func (b *BitcoinClient) createBody(methodType string) (*bytes.Buffer, error) {
-	body := methodBody{methodType}
-	bodyJSON, err := json.Marshal(body)
+// createBody marshals the rpcBody to JSON format
+func (b *BitcoinClient) createBody(rpcBody *RPCBody) (*bytes.Buffer, error) {
+	bodyJSON, err := json.Marshal(rpcBody)
 	if err != nil {
 		log.Println(ErrCreatingBody)
 		return nil, ErrCreatingBody
@@ -74,7 +80,7 @@ func (b *BitcoinClient) sendRequest(req *http.Request) (*http.Response, error) {
 func (b *BitcoinClient) convBodyToStr(res *http.Response) (string, error) {
 	bodyBytes, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.Println(err)
+		log.Println(ErrConvertingBodyToString)
 		return "", ErrConvertingBodyToString
 	}
 
