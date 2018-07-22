@@ -1,0 +1,27 @@
+version: '3'
+services:
+  api:
+    container_name: 'api'
+    build: ./go-api
+    ports:
+      - 8548:8548
+    environment:
+      - USERNAME=$BTC_MAINNET_USERNAME
+      - PASSWORD=$BTC_MAINNET_PASSWORD
+      - BTC_MAIN_DOMAIN=$BTC_MAINNET_DOMAIN_EXTERNAL
+    networks:
+      default:
+        ipv4_address: $API_SUBNET
+  
+  front-end:
+    container_name: 'front-end'
+    build: ./front-end/blocksage
+    ports:
+      - 8080:8080
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/24
