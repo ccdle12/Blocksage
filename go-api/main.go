@@ -2,12 +2,17 @@ package main
 
 import (
 	"fmt"
+	"github.com/ccdle12/Blocksage/go-api/bitcoincrawler"
 	"github.com/ccdle12/Blocksage/go-api/injector"
 	"log"
 	"net/http"
 )
 
 func main() {
+	// TODO: Throwing crawler here, will be separated later
+	bitcoinCrawler := &bitcoincrawler.BitcoinCrawler{}
+	bitcoinCrawler.Start()
+
 	inj := injector.DependencyInjector{}
 	API := inj.InjectMainnetAPI()
 	router := inj.InjectRouter()
