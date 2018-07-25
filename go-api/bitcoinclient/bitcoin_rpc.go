@@ -86,3 +86,11 @@ func (b *BitcoinClient) convBodyToStr(res *http.Response) (string, error) {
 
 	return string(bodyBytes), nil
 }
+
+// createRPCBitcoinResponse will take a response string and return a RPCBitcoinReponse struct
+func (b *BitcoinClient) createRPCBitcoinResponse(res string) *RPCBitcoinResponse {
+	var rpcBitcoinResponse RPCBitcoinResponse
+	json.Unmarshal([]byte(res), &rpcBitcoinResponse)
+
+	return &rpcBitcoinResponse
+}
