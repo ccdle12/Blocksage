@@ -1,7 +1,6 @@
 package bitcoinclient
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -31,8 +30,7 @@ func TestGetNetworkInfo(t *testing.T) {
 		t.Errorf("GetNetworkInfo has failed, Received: %v", res)
 	}
 
-	var rpcBitcoinResponse RPCBitcoinResponse
-	json.Unmarshal([]byte(res), &rpcBitcoinResponse)
+	rpcBitcoinResponse := bitcoinClient.createRPCBitcoinResponse(res)
 
 	if rpcBitcoinResponse.Error.Code != 0 {
 		t.Errorf("GetNetworkInfo has returned an error, Received: %v", rpcBitcoinResponse.Error.Message)
@@ -49,8 +47,7 @@ func TestGetBlock(t *testing.T) {
 		t.Errorf("GetBlock has failed, Received: %v", res)
 	}
 
-	var rpcBitcoinResponse RPCBitcoinResponse
-	json.Unmarshal([]byte(res), &rpcBitcoinResponse)
+	rpcBitcoinResponse := bitcoinClient.createRPCBitcoinResponse(res)
 
 	if rpcBitcoinResponse.Error.Code != 0 {
 		t.Errorf("GetBlock has returned an error, Received: %v", rpcBitcoinResponse.Error.Message)
@@ -67,8 +64,7 @@ func TestGetTransaction(t *testing.T) {
 		t.Errorf("GetTransaction has failed, Received: %v", res)
 	}
 
-	var rpcBitcoinResponse RPCBitcoinResponse
-	json.Unmarshal([]byte(res), &rpcBitcoinResponse)
+	rpcBitcoinResponse := bitcoinClient.createRPCBitcoinResponse(res)
 
 	if rpcBitcoinResponse.Error.Code != 0 {
 		t.Errorf("GetTransaction has returned an error, Received: %v", rpcBitcoinResponse.Error.Message)
