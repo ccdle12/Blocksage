@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// BitcoinCrawler is a struct that will crawl retrieve data from the Blockchain
 type BitcoinCrawler struct{}
 
 // BitcoinBlockResponse inherits from RPCBitcoinResponse, the block struct overwrites the Result field in RPCBitcoinResponse
@@ -48,6 +49,7 @@ var (
 	recentBlock      = "000000000000000000071629bba3984b668c31b3b599b3ad3c4de2341fb2c874"
 )
 
+// Start will run the crawler
 func (b *BitcoinCrawler) Start() {
 	latestBlock := b.crawl(recentBlock)
 	b.pollForBlocks(latestBlock)
