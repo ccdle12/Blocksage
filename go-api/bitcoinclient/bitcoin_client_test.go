@@ -20,7 +20,7 @@ var (
 )
 
 func TestGetNetworkInfo(t *testing.T) {
-	// Shoudl get network info
+	// Should get network info
 	res, err := bitcoinClient.GetNetworkInfo()
 	if err != nil {
 		t.Errorf("GetNetworkInfo has failed, error returned: %v", err.Error())
@@ -37,7 +37,7 @@ func TestGetNetworkInfo(t *testing.T) {
 	}
 }
 func TestGetBlock(t *testing.T) {
-	// Shoudl get block hash
+	// Should get block hash
 	res, err := bitcoinClient.GetBlock(blockHash)
 	if err != nil {
 		t.Errorf("GetBlock has failed, error returned: %v", err.Error())
