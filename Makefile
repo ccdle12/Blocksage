@@ -1,6 +1,13 @@
- GOCMD=go
- GOTEST=$(GOCMD) test
+GOCMD=go
+GOTEST=$(GOCMD) test
+DC=docker-compose
+CDEV=-f docker-compose-dev.yml
 
+# Run Project
+run:
+	$(DC) $(CDEV) up
+
+# Run all Tests
 test-api-all: 
 	docker exec -i -t api /bin/bash -c "${GOTEST} -v ./... "
 
@@ -14,3 +21,7 @@ test-api-injector:
 # Integration Tests
 test-api-integration:
 	docker exec -i -t api /bin/bash -c "cd bitcoinclient && ${GOTEST} -v"
+
+# Clean
+clean:
+	$(DC) $(CDEV) down
