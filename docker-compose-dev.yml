@@ -5,7 +5,7 @@ services:
     build: ./go-api
     volumes:
       - ./go-api:/go/src/github.com/ccdle12/Blocksage/go-api
-      - ./go-api/tmp
+      - /go-api/tmp/
     ports:
       - 8548:8548
     environment:
@@ -21,7 +21,7 @@ services:
     build: ./front-end/blocksage
     volumes:
       - ./front-end/blocksage:/app/blocksage
-      - ./front-end/blocksage/node_modules/
+      - /front-end/blocksage/node_modules/
     ports:
       - 8080:8080
 
