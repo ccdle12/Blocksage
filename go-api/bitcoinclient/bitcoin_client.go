@@ -21,7 +21,7 @@ func init() {
 	// Write error log prints to log.txt
 	nf, err := os.Create("./bitcoinclient/log.txt")
 	if err != nil {
-		fmt.Println("Non-Crucial Internal Error - Cannot create log.txt file for bitcoinclient.go")
+		fmt.Println("Non-Critical Internal Error - Cannot create log.txt file for bitcoinclient.go")
 		return
 	}
 
