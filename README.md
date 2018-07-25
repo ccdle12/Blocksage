@@ -12,7 +12,24 @@ The project currently consists of:
 * [Docker Compose](https://docs.docker.com/compose/install/)
 
 # Setup Project
-Run the front-end and the API
+Run the Project
 ```
-$ docker-compose -f docker-compose-dev.yml up
+$ make run
+```
+
+# Run Tests
+## API Test
+* Unit Tests
+```
+$ make test-api-unittest
+```
+
+* Integration Tests
+```
+$ make test-api-integration
+```
+
+* All tests
+```
+$ make test-api-all
 ```
