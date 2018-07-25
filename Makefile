@@ -7,6 +7,9 @@ CDEV=-f docker-compose-dev.yml
 run:
 	$(DC) $(CDEV) up
 
+run-detach:
+	$(DC) $(CDEV) up -d
+
 # Run all Tests
 test-api-all: 
 	docker exec -i -t api /bin/bash -c "${GOTEST} -v ./... "
