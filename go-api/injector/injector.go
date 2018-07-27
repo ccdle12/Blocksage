@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/ccdle12/Blocksage/go-api/api"
 	"github.com/ccdle12/Blocksage/go-api/bitcoinclient"
+	"github.com/ccdle12/Blocksage/go-api/bitcoincrawler"
 	"github.com/gorilla/mux"
 	"net/http"
 	"os"
@@ -35,5 +36,12 @@ func (d *DependencyInjector) InjectBitcoinClient() *bitcoinclient.BitcoinClient 
 	return &bitcoinclient.BitcoinClient{
 		Client:          &http.Client{Timeout: time.Duration(5 * time.Second)},
 		BitcoinNodeAddr: fmt.Sprintf("http://%s:8332", btcMainDomain),
+	}
+}
+
+// InjectBitcoinCrawler will create and return a BitcoinCrawler struct
+func (d *DependencyInjector) InjectBitcoinCrawler() *bitcoincrawler.BitcoinCrawler {
+	return &bitcoincrawler.BitcoinCrawler{
+		BitcoinClient: d.InjectBitcoinClient(),
 	}
 }

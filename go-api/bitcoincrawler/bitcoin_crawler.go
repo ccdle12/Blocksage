@@ -4,13 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/ccdle12/Blocksage/go-api/bitcoinclient"
-	"net/http"
-	"os"
+	// "net/http"
+	// "os"
 	"time"
 )
 
 // BitcoinCrawler is a struct that will crawl retrieve data from the Blockchain
-type BitcoinCrawler struct{}
+type BitcoinCrawler struct {
+	BitcoinClient *bitcoinclient.BitcoinClient
+}
 
 // BitcoinBlockResponse inherits from RPCBitcoinResponse, the block struct overwrites the Result field in RPCBitcoinResponse
 // TODO: Separate the structs into a model package?
@@ -40,13 +42,14 @@ type block struct {
 }
 
 var (
-	btcMainDomain = os.Getenv("BTC_MAIN_DOMAIN")
-	bitcoinClient = &bitcoinclient.BitcoinClient{
-		Client:          &http.Client{Timeout: time.Duration(5 * time.Second)},
-		BitcoinNodeAddr: fmt.Sprintf("http://%s:8332", btcMainDomain),
-	}
+	// btcMainDomain = os.Getenv("BTC_MAIN_DOMAIN")
+	// bitcoinClient = &bitcoinclient.BitcoinClient{
+	// 	Client:          &http.Client{Timeout: time.Duration(5 * time.Second)},
+	// 	BitcoinNodeAddr: fmt.Sprintf("http://%s:8332", btcMainDomain),
+	// }
 	genesisBlockHash = "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"
 	recentBlock      = "000000000000000000071629bba3984b668c31b3b599b3ad3c4de2341fb2c874"
+	block533979      = "0824fec1580a505a2f363347777aeff54242914316c40ab93d6fee6b4ddbf48c"
 )
 
 // Start will run the crawler
@@ -58,7 +61,7 @@ func (b *BitcoinCrawler) Start() {
 func (b *BitcoinCrawler) crawl(blockHash string) string {
 	nextBlockHash := blockHash
 	for {
-		res, err := bitcoinClient.GetBlock(nextBlockHash)
+		res, err := b.BitcoinClient.GetBlock(nextBlockHash)
 		if err != nil {
 			fmt.Println(err.Error())
 		}
