@@ -77,7 +77,7 @@ func (b *BitcoinClient) getResponse(rpcBody *RPCBody) (string, error) {
 	// Bitcoin Node returns an empty string if authentication fails and also returns a JSON for RPC requests
 	rpcError := b.AuthenticateRPCResponse(resStr)
 	if rpcError != nil {
-		return err.Error(), err
+		return rpcError.Error(), rpcError
 	}
 
 	return resStr, nil

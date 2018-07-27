@@ -8,7 +8,15 @@ import (
 )
 
 func main() {
+	// TODO: Throwing crawler here, will be separated later
+	// TODO: Make crawler run on a separate go routine
 	inj := injector.DependencyInjector{}
+
+	go func() {
+		bitcoinCrawler := inj.InjectBitcoinCrawler()
+		bitcoinCrawler.Start()
+	}()
+
 	API := inj.InjectMainnetAPI()
 	router := inj.InjectRouter()
 

@@ -1,7 +1,8 @@
+// +build integration
+
 package bitcoinclient
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -21,7 +22,7 @@ var (
 )
 
 func TestGetNetworkInfo(t *testing.T) {
-	// Shoudl get network info
+	// Should get network info
 	res, err := bitcoinClient.GetNetworkInfo()
 	if err != nil {
 		t.Errorf("GetNetworkInfo has failed, error returned: %v", err.Error())
@@ -31,15 +32,14 @@ func TestGetNetworkInfo(t *testing.T) {
 		t.Errorf("GetNetworkInfo has failed, Received: %v", res)
 	}
 
-	var rpcBitcoinResponse RPCBitcoinResponse
-	json.Unmarshal([]byte(res), &rpcBitcoinResponse)
+	rpcBitcoinResponse := bitcoinClient.createRPCBitcoinResponse(res)
 
 	if rpcBitcoinResponse.Error.Code != 0 {
 		t.Errorf("GetNetworkInfo has returned an error, Received: %v", rpcBitcoinResponse.Error.Message)
 	}
 }
 func TestGetBlock(t *testing.T) {
-	// Shoudl get block hash
+	// Should get block hash
 	res, err := bitcoinClient.GetBlock(blockHash)
 	if err != nil {
 		t.Errorf("GetBlock has failed, error returned: %v", err.Error())
@@ -49,8 +49,7 @@ func TestGetBlock(t *testing.T) {
 		t.Errorf("GetBlock has failed, Received: %v", res)
 	}
 
-	var rpcBitcoinResponse RPCBitcoinResponse
-	json.Unmarshal([]byte(res), &rpcBitcoinResponse)
+	rpcBitcoinResponse := bitcoinClient.createRPCBitcoinResponse(res)
 
 	if rpcBitcoinResponse.Error.Code != 0 {
 		t.Errorf("GetBlock has returned an error, Received: %v", rpcBitcoinResponse.Error.Message)
@@ -67,8 +66,7 @@ func TestGetTransaction(t *testing.T) {
 		t.Errorf("GetTransaction has failed, Received: %v", res)
 	}
 
-	var rpcBitcoinResponse RPCBitcoinResponse
-	json.Unmarshal([]byte(res), &rpcBitcoinResponse)
+	rpcBitcoinResponse := bitcoinClient.createRPCBitcoinResponse(res)
 
 	if rpcBitcoinResponse.Error.Code != 0 {
 		t.Errorf("GetTransaction has returned an error, Received: %v", rpcBitcoinResponse.Error.Message)

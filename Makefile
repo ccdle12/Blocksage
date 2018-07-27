@@ -1,7 +1,15 @@
 GOCMD=go
 GOTEST=$(GOCMD) test
+
 DC=docker-compose
+DE=docker exec -i -t
+B=/bin/bash -c
+A=api
+BC=bitcoinclient
+DE-API=$(DE) $(A) $(B)
+
 CDEV=-f docker-compose-dev.yml
+
 
 # Run Project
 run:
@@ -10,20 +18,18 @@ run:
 run-detach:
 	$(DC) $(CDEV) up -d
 
-# Run all Tests
-test-api-all: 
-	docker exec -i -t api /bin/bash -c "${GOTEST} -v ./... "
+# Run all Tests API
+test-api: 
+	make test-api-unit
+	make test-api-integration
 
 # Unit Tests
-test-api-unittest:
-	make test-api-injector
-
-test-api-injector: 
-	docker exec -i -t api /bin/bash -c "cd injector && ${GOTEST} -v"
+test-api-unit:
+	$(DE-API) "${GOTEST} ./... -tags=unit"
 
 # Integration Tests
 test-api-integration:
-	docker exec -i -t api /bin/bash -c "cd bitcoinclient && ${GOTEST} -v"
+	$(DE-API) "${GOTEST} ./... -tags=integration"
 
 # Clean
 clean:
