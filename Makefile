@@ -15,6 +15,9 @@ CDEV=-f docker-compose-dev.yml
 run:
 	$(DC) $(CDEV) up
 
+build:
+	$(DC) $(CDEV) build
+
 run-detach:
 	$(DC) $(CDEV) up -d
 
