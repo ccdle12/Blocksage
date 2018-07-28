@@ -12,6 +12,7 @@ services:
       - USERNAME=$BTC_MAINNET_USERNAME
       - PASSWORD=$BTC_MAINNET_PASSWORD
       - BTC_MAIN_DOMAIN=$BTC_MAINNET_DOMAIN_EXTERNAL
+      - DB_DOMAIN=$DB_SUBNET
     networks:
       default:
         ipv4_address: $API_SUBNET
@@ -23,8 +24,21 @@ services:
       - ./front-end/blocksage:/app/blocksage
       - /front-end/blocksage/node_modules/
     ports:
-      - 8080:8080
+      - 3000:3000
 
+  db:
+    container_name: 'db'
+    image: postgres
+    environment:
+      POSTGRES_DB: dev
+      POSTGRES_USER: postgres-dev
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - 5432:5432
+    networks:
+      default:
+        ipv4_address: $DB_SUBNET
+      
 networks:
   default:
     driver: bridge
