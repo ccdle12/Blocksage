@@ -30,9 +30,9 @@ services:
     container_name: 'db'
     image: postgres
     environment:
-      POSTGRES_DB: dev
-      POSTGRES_USER: postgres-dev
-      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: $DB_NAME
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
     ports:
       - 5432:5432
     networks:
