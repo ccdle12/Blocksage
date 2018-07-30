@@ -38,6 +38,12 @@ services:
     networks:
       default:
         ipv4_address: $DB_SUBNET
+
+  adminer:
+    container_name: 'adminer'
+    image: adminer
+    ports:
+      - 8080:8080
       
 networks:
   default:
