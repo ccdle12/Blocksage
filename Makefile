@@ -8,7 +8,7 @@ A=api
 BC=bitcoinclient
 DE-API=$(DE) $(A) $(B)
 
-CDEV=-f docker-compose-dev.yml
+CDEV=-f docker-compose.yml
 
 
 # Run Project
