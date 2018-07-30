@@ -12,7 +12,7 @@ CDEV=-f docker-compose-dev.yml
 
 
 # Run Project
-run:
+default:
 	$(DC) $(CDEV) up
 
 build:
@@ -20,6 +20,10 @@ build:
 
 run-detach:
 	$(DC) $(CDEV) up -d
+
+# Tests
+check:
+	make test-api
 
 # Run all Tests API
 test-api: 
