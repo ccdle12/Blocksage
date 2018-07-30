@@ -14,7 +14,7 @@ The project currently consists of:
 # Setup Project
 Run the Project
 ```
-$ make run
+$ make
 ```
 
 # Run Tests
@@ -31,5 +31,5 @@ $ make test-api-integration
 
 * All tests
 ```
-$ make test-api-all
+$ make check
 ```
