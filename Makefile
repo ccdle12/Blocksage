@@ -18,8 +18,11 @@ default:
 build:
 	$(DC) $(CDEV) build
 
-run-detach:
+detach:
 	$(DC) $(CDEV) up -d
+
+adminer:
+	open http://localhost:8080
 
 # Tests
 check:
@@ -31,12 +34,12 @@ test-api:
 	make test-api-integration
 
 # Unit Tests
-test-api-unit:
-	$(DE-API) "${GOTEST} ./... -tags=unit"
+unit-test-api:
+	$(DE-API) "${GOTEST} -v ./... -tags=unit"
 
 # Integration Tests
-test-api-integration:
-	$(DE-API) "${GOTEST} ./... -tags=integration"
+integration-test-api:
+	$(DE-API) "${GOTEST} -v ./... -tags=integration"
 
 # Clean
 clean:
