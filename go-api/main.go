@@ -1,29 +1,39 @@
 package main
 
-import (
-	"fmt"
-	"github.com/ccdle12/Blocksage/go-api/injector"
-	"log"
-	"net/http"
-)
+// "github.com/ccdle12/Blocksage/go-api/dbhandler"
 
 func main() {
+	//DBHanlder
+	// TODO: Intialise an Object to pass as argument?
+	// _, err := dbhandler.New("172.25.0.4", "5432", "postgres-dev", "12345", "dev", "postgres")
+	// if err != nil {
+	// 	fmt.Println("There was an error")
+	// }
+
+	// blockTable, err := blocktable.New(dbHandler)
+	// if err != nil {
+	// 	fmt.Println("There was an error create blocktable")
+	// }
+
+	// if err := blockTable.CreateTable(); err != nil {
+	// 	fmt.Println("Error create blockTable")
+	// }
+
 	// TODO: Throwing crawler here, will be separated later
-	// TODO: Make crawler run on a separate go routine
-	inj := injector.DependencyInjector{}
+	// inj := injector.DependencyInjector{}
 
-	go func() {
-		bitcoinCrawler := inj.InjectBitcoinCrawler()
-		bitcoinCrawler.Start()
-	}()
+	// // go func() {
+	// // 	bitcoinCrawler := inj.InjectBitcoinCrawler()
+	// // 	bitcoinCrawler.Start()
+	// // }()
 
-	API := inj.InjectMainnetAPI()
-	router := inj.InjectRouter()
+	// API := inj.InjectMainnetAPI()
+	// router := inj.InjectRouter()
 
-	router.HandleFunc("/api/network-info", API.NetworkInfo).Methods("GET")
-	router.HandleFunc("/api/blocks/{blockhash}", API.Blocks).Methods("GET")
-	router.HandleFunc("/api/txs/{txhash}", API.Transactions).Methods("GET")
+	// router.HandleFunc("/api/network-info", API.NetworkInfo).Methods("GET")
+	// router.HandleFunc("/api/blocks/{blockhash}", API.Blocks).Methods("GET")
+	// router.HandleFunc("/api/txs/{txhash}", API.Transactions).Methods("GET")
 
-	fmt.Println("Serving on Port 8548...")
-	log.Fatal(http.ListenAndServe(":8548", router))
+	// fmt.Println("Serving on Port 8548...")
+	// log.Fatal(http.ListenAndServe(":8548", router))
 }

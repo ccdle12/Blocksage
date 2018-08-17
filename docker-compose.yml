@@ -16,6 +16,20 @@ services:
     networks:
       default:
         ipv4_address: $API_SUBNET
+
+  crawler:
+    container_name: 'crawler'
+    build: ./go-crawler
+    volumes:
+      - ./go-crawler:/go/src/github.com/ccdle12/Blocksage/go-crawler
+      - /go-crawler/tmp/
+    ports:
+      - 9548:9548
+    environment:
+      - USERNAME=$BTC_MAINNET_USERNAME
+      - PASSWORD=$BTC_MAINNET_PASSWORD
+      - BTC_MAIN_DOMAIN=$BTC_MAINNET_DOMAIN_EXTERNAL
+      - DB_DOMAIN=$DB_SUBNET
   
   front-end:
     container_name: 'front-end'

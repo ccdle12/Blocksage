@@ -13,7 +13,7 @@ CDEV=-f docker-compose.yml
 
 # Run Project
 default:
-	$(DC) $(CDEV) up
+	$(DC) up
 
 build:
 	$(DC) $(CDEV) build
@@ -30,8 +30,8 @@ check:
 
 # Run all Tests API
 test-api: 
-	make test-api-unit
-	make test-api-integration
+	make unit-test-api
+	make integration-test-api
 
 # Unit Tests
 unit-test-api:
@@ -43,4 +43,5 @@ integration-test-api:
 
 # Clean
 clean:
-	$(DC) $(CDEV) down
+	$(DC) stop
+	$(DC) down
