@@ -1,5 +1,6 @@
 package bitcoincrawler
 
+// TODO (ccdle12): Add package description
 import (
 	"encoding/json"
 	"fmt"
@@ -9,15 +10,13 @@ import (
 	"github.com/ccdle12/Blocksage/go-crawler/bitcoinclient"
 	"github.com/ccdle12/Blocksage/go-crawler/dbhandler"
 	"github.com/ccdle12/Blocksage/go-crawler/models"
-	"github.com/ccdle12/Blocksage/go-crawler/tables"
 )
 
-// BitcoinCrawler is a struct that will crawl and retrieve data from
-// the Blockchain
+// BitcoinCrawler is a struct that will crawl and retrieve data from the Blockchain
+// TODO (ccdle12): Refactor name for BTCClient
 type BitcoinCrawler struct {
-	BTCClient  *bitcoinclient.BitcoinClient
-	DBHandler  *dbhandler.DBHandler
-	BlockTable *blocktable.BlockTable
+	BTCClient *bitcoinclient.BitcoinClient
+	DBHandler *dbhandler.DBHandler
 }
 
 // BitcoinBlockResponse inherits from RPCBitcoinResponse, the block
@@ -27,6 +26,7 @@ type BitcoinBlockResponse struct {
 	Result             *models.Block `json:"result"`
 }
 
+// TODO (ccdle12): Separate the vars to their own groups according to their use
 var (
 	// The crawler will start crawling blocks from the genesis
 	genesisBlockHash = "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"
@@ -41,11 +41,10 @@ var (
 )
 
 // New returns an instance of the BitcoinCrawler
-func New(bitcoinClient *bitcoinclient.BitcoinClient, dbHandler *dbhandler.DBHandler, blockTable *blocktable.BlockTable) *BitcoinCrawler {
+func New(bitcoinClient *bitcoinclient.BitcoinClient, dbHandler *dbhandler.DBHandler) *BitcoinCrawler {
 	return &BitcoinCrawler{
-		BTCClient:  bitcoinClient,
-		DBHandler:  dbHandler,
-		BlockTable: blockTable,
+		BTCClient: bitcoinClient,
+		DBHandler: dbHandler,
 	}
 }
 
@@ -75,7 +74,7 @@ func (b *BitcoinCrawler) crawl(blockHash string) string {
 
 		// TODO (ccdle12):
 		// 1. Write the block to the DB
-		if insertBlockError := b.BlockTable.InsertBlock(bitcoinBlockResponse.Result); insertBlockError != nil {
+		if insertBlockError := b.DBHandler.InsertBlock(bitcoinBlockResponse.Result); insertBlockError != nil {
 			fmt.Println("Insert Block Error: ", err.Error())
 		}
 
