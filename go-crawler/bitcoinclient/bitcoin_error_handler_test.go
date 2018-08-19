@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// TODO (ccdle12): Seperate vars
 var (
 	btcMainDomain = os.Getenv("BTC_MAIN_DOMAIN")
 	bitcoinClient = &BitcoinClient{
