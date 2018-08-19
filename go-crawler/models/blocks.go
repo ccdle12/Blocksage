@@ -1,6 +1,7 @@
 package models
 
 type Block struct {
+	ID            int64    `json:"-"`
 	Hash          string   `json:"hash"`
 	Confirmations int      `json:"confirmations"`
 	Strippedsize  int      `json:"strippedsize"`
