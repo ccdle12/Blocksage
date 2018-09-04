@@ -1,5 +1,5 @@
 # FROM golang:latest as build
-FROM golang:1.8
+FROM golang:latest
 
 WORKDIR /go/src/github.com/ccdle12/Blocksage/go-crawler
 COPY ./ ./

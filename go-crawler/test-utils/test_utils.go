@@ -18,13 +18,14 @@ const (
 	IncorrectMethod = "getalltxs"
 
 	// DBHandler variables
-	DBHost     = "http://123.45.67.8:8332"
-	DBPort     = "8332"
-	DBUser     = "dev"
-	DBPassword = "123"
+	DBHost          = "172.25.0.4"
+	IncorrectDBHost = "123.45.6.7"
+	DBPort          = "5432"
+	DBUser          = "postgres-dev"
+	DBPassword      = "12345"
 
 	// DBName is the database to connect to
-	DBName = "postgresdev"
+	DBName = "dev"
 
 	// DBType is the driver type for the DB
 	DBType = "postgres"
