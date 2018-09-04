@@ -1,60 +1,46 @@
-GOCMD=go
-GOTEST=$(GOCMD) test
+.PHONY: env-up build adminer check clean
 
-DC=docker-compose
-DE=docker exec -i -t
-B=/bin/bash -c
-A=api
-BC=bitcoinclient
-C=crawler
-DE-API=$(DE) $(A) $(B)
-DE-CRAWLER=$(DE) $(C) $(B)
+default: clean build env-up
 
-CDEV=-f docker-compose.yml
+# env-up will launch the project	
+env-up:
+	@echo "[Bringing up environment...]"
+	docker-compose up -d
 
-
-# Run Project
-default:
-	$(DC) up
-
+# build all the images in the docker-compose file
 build:
-	$(DC) $(CDEV) build
+	@echo "[Building containers...]"
+	docker-compose -f docker-compose.yml build
 
-detach:
-	$(DC) $(CDEV) up -d
-
+# adminer will open adminer on the localhost
 adminer:
 	open http://localhost:8080
 
-# Tests
-check:
-	make test-api
-	make test-crawler
+# check will run all tests for each service in the project
+check: test-api test-crawler
 
-# Run all Tests API
-test-api: 
-	make unit-test-api
-	make integration-test-api
+# service specific tests
+test-api: unit-test-api integration-test-crawler
 
-test-crawler: 
-	make unit-test-crawler
-	make integration-test-crawler
+test-crawler: unit-test-crawler integration-test-crawler
 
-# Unit Tests
+# api tests
 unit-test-api:
-	$(DE-API) "${GOTEST} -v ./... -tags=unit"
+	@docker exec -it api /bin/bash -c "go test -v ./... -tags=unit"
 
-unit-test-crawler:
-	$(DE-CRAWLER) "${GOTEST} -v ./... -tags=unit"
-
-# Integration Tests
 integration-test-api:
-	$(DE-API) "${GOTEST} -v ./... -tags=integration"
+	@docker exec -it api /bin/bash -c "go test -v ./... -tags=integration"
+
+# crawler tests
+unit-test-crawler:
+	@docker exec -it crawler /bin/bash -c "go test -v ./... -tags=unit"
 
 integration-test-crawler:
-	$(DE-CRAWLER) "${GOTEST} -v ./... -tags=integration"
+	@echo "[Running crawler integration tests...]"
+	@docker exec -it crawler /bin/bash -c "go test -v ./... -tags=integration"
 
-# Clean
+# clean will tear down the docker network
 clean:
-	$(DC) stop
-	$(DC) down
+	@echo "[Cleaning up project...]"
+	@docker-compose down --volumes --remove-orphans
+	@cd go-crawler && rm -rf tmp | true
