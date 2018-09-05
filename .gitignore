@@ -2,3 +2,4 @@
 .env
 cloud/bitcoin-node/docker-entrypoint.sh
 go-api/tmp
+go-crawler/tmp
