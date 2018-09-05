@@ -6,14 +6,15 @@ import (
 	"github.com/ccdle12/Blocksage/go-crawler/utils"
 )
 
-// DBHandler is a struct that manages a connection to the DB and provides functions to read/write to the DB
-type DBHandler struct {
+// DBClient is a struct that manages a connection to the DB and provides functions to read/write to the DB
+type DBClient struct {
 	cfg     *models.DBConfig
-	usecase usecases.DBUsecase
+	usecase usecases.DBClient
 }
 
-// NewDBHandler will return an instance of the DBHandler that will read/write from different
-func NewDBHandler(host, port, user, password, dbName, dbType string) (*DBHandler, error) {
+// NewDBClient will return an instance of the DBClient that will read/write from different
+// usecases.
+func NewDBClient(host, port, user, password, dbName, dbType string) (*DBClient, error) {
 	if utils.EmptyString(host, port, user, password, dbName) {
 		return nil, utils.ErrPassingEmptyString
 	}
@@ -27,9 +28,9 @@ func NewDBHandler(host, port, user, password, dbName, dbType string) (*DBHandler
 		DBType:     dbType,
 	}
 
-	usecase := usecases.NewPostGresHandler(cfg)
+	usecase := usecases.NewPostGresClient(cfg)
 
-	return &DBHandler{
+	return &DBClient{
 		cfg:     cfg,
 		usecase: usecase,
 	}, nil
@@ -37,7 +38,7 @@ func NewDBHandler(host, port, user, password, dbName, dbType string) (*DBHandler
 
 // TODO (ccdle12): Needs Integration Testing
 // Connect will request the usecase to open a connection to the DB.
-func (d *DBHandler) Connect() error {
+func (d *DBClient) Connect() error {
 	if err := d.usecase.OpenConnection(); err != nil {
 		return err
 	}
@@ -47,7 +48,7 @@ func (d *DBHandler) Connect() error {
 
 // TODO (ccdle12): Needs Integration Testing
 // Close will request the usecase to close the connection to the DB.
-func (d *DBHandler) Close() error {
+func (d *DBClient) Close() error {
 	if err := d.usecase.CloseConnection(); err != nil {
 		return err
 	}

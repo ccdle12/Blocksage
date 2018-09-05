@@ -17,7 +17,7 @@ const (
 	BlockHash0      = "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"
 	IncorrectMethod = "getalltxs"
 
-	// DBHandler variables
+	// DBClientUsecase variables
 	DBHost          = "172.25.0.4"
 	IncorrectDBHost = "123.45.6.7"
 	DBPort          = "5432"

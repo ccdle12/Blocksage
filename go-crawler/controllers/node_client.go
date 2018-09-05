@@ -13,7 +13,7 @@ type NodeClient struct {
 	address  string
 	username string
 	password string
-	usecase  usecases.NodeClientUsecase
+	usecase  usecases.NodeClient
 }
 
 // NewNodeClient is the constructor for the NodeClient and will return an instance of

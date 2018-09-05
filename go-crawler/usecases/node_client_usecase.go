@@ -4,7 +4,7 @@ import (
 	"github.com/ccdle12/Blocksage/go-crawler/models"
 )
 
-// NodeClientUsecase is the interface for the BitcoinClient Usecase.
-type NodeClientUsecase interface {
+// NodeClient is the interface for the DBClient Usecase.
+type NodeClient interface {
 	SendNodeRequest(*models.NodeRequest) (*models.NodeResponse, error)
 }

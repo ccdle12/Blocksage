@@ -12,23 +12,23 @@ import (
 	"github.com/lib/pq"
 )
 
-// PostGresHandler struct is the concrete implementation of the Postgres
+// PostGresClient struct is the concrete implementation of the Postgres
 // usecase.
-type PostGresHandler struct {
+type PostGresClient struct {
 	cfg *models.DBConfig
 	db  *sql.DB
 }
 
-// NewPostGresHandler will return a new instance of the PostGresHandler struct.
-func NewPostGresHandler(cfg *models.DBConfig) *PostGresHandler {
-	return &PostGresHandler{
+// NewPostGresClient will return a new instance of the PostGresClient struct.
+func NewPostGresClient(cfg *models.DBConfig) *PostGresClient {
+	return &PostGresClient{
 		cfg: cfg,
 	}
 }
 
 // TODO (ccdle12): This will need it's own integration tests
 // OpenConnection will create a connection to the DB.
-func (p *PostGresHandler) OpenConnection() error {
+func (p *PostGresClient) OpenConnection() error {
 	if err := p.connect(); err != nil {
 		return err
 	}
@@ -40,7 +40,7 @@ func (p *PostGresHandler) OpenConnection() error {
 	return nil
 }
 
-func (p *PostGresHandler) connect() error {
+func (p *PostGresClient) connect() error {
 	db, err := sql.Open(p.cfg.DBType, fmt.Sprintf(
 		"user=%s password=%s dbname=%s host=%s port=%s sslmode=disable",
 		p.cfg.DBUser, p.cfg.DBPassword, p.cfg.DBName, p.cfg.DBHost, p.cfg.DBPort))
@@ -55,7 +55,7 @@ func (p *PostGresHandler) connect() error {
 	return nil
 }
 
-func (p *PostGresHandler) ping() error {
+func (p *PostGresClient) ping() error {
 	if err := p.db.Ping(); err != nil {
 		return utils.ErrFailedToPingDB
 	}
@@ -65,7 +65,7 @@ func (p *PostGresHandler) ping() error {
 
 // TODO (ccdle12): This will need it's own integration tests
 // CloseConnection will close the connection to the DB.
-func (p *PostGresHandler) CloseConnection() error {
+func (p *PostGresClient) CloseConnection() error {
 	if p.db == nil {
 		return nil
 	}
@@ -82,7 +82,7 @@ func (p *PostGresHandler) CloseConnection() error {
 // 2. remove confirmations
 // 3. create a table for tx and write txs to them
 // InsertBlock will write a Block to the DB
-func (p *PostGresHandler) InsertBlock(b *models.Block) error {
+func (p *PostGresClient) InsertBlock(b *models.Block) error {
 	_, err := p.db.Exec("INSERT INTO blocks (hash, confirmations, strippedsize, size, weight, height, version, versionHex, merkleroot, tx, time, mediantime, nonce, bits, difficulty, chainwork, nextblockhash) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) ON CONFLICT (hash) DO NOTHING;",
 		b.Hash, b.Confirmations, b.Strippedsize, b.Size, b.Weight, b.Height, b.Version,
 		b.VersionHex, b.MerkleRoot, pq.Array(b.TX), b.Time, b.MedianTime, b.Nonce, b.Bits, b.Difficulty, b.Chainwork, b.NextBlockHash)

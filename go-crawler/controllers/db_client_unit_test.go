@@ -9,15 +9,15 @@ import (
 	"testing"
 )
 
-// TestInitDBHandler will test that a DBHandler can be initialized.
-func TestInitDBHandler(t *testing.T) {
+// TestInitDBClient will test that a DBClient can be initialized.
+func TestInitDBClient(t *testing.T) {
 	assert := assert.New(t)
 
-	dbHandler, err := NewDBHandler(testutils.DBHost, testutils.DBPort, testutils.DBUser,
+	dbClient, err := NewDBClient(testutils.DBHost, testutils.DBPort, testutils.DBUser,
 		testutils.DBPassword, testutils.DBName, testutils.DBType)
 
 	assert.NoError(err, "There should be no error")
-	assert.NotNil(dbHandler, "DBHandler is not nil when attempting to initialize")
+	assert.NotNil(dbClient, "DBClient is not nil when attempting to initialize")
 }
 
 // TestConfigInit will test that the cfg DBConfig struct was initialized by the
@@ -25,62 +25,62 @@ func TestInitDBHandler(t *testing.T) {
 func TestConfigInit(t *testing.T) {
 	assert := assert.New(t)
 
-	dbHandler, err := NewDBHandler(testutils.DBHost, testutils.DBPort, testutils.DBUser,
+	dbClient, err := NewDBClient(testutils.DBHost, testutils.DBPort, testutils.DBUser,
 		testutils.DBPassword, testutils.DBName, testutils.DBType)
 
 	assert.NoError(err, "There should be no error")
-	assert.NotNil(dbHandler.cfg, "cfg is not nil when attempting to initialize")
-	assert.EqualValues(dbHandler.cfg.DBHost, testutils.DBHost, "Same host was initialized in cfg.DBHost")
+	assert.NotNil(dbClient.cfg, "cfg is not nil when attempting to initialize")
+	assert.EqualValues(dbClient.cfg.DBHost, testutils.DBHost, "Same host was initialized in cfg.DBHost")
 }
 
 // TestEmptyStringInit will test that we are passing an empty string as one of the parameters for
-// initializing a DBHandler.
+// initializing a DBClient.
 func TestEmptyStringInit(t *testing.T) {
 	assert := assert.New(t)
 
-	dbHandler, err := NewDBHandler(testutils.DBHost, "", testutils.DBUser,
+	dbClient, err := NewDBClient(testutils.DBHost, "", testutils.DBUser,
 		testutils.DBPassword, testutils.DBName, testutils.DBType)
 
 	assert.Error(err, "Error should be returned")
 	assert.EqualValues(err, utils.ErrPassingEmptyString, "The error return ErrPassingEmptyString")
-	assert.Nil(dbHandler, "DBHandler is not nil when attempting to initialize")
+	assert.Nil(dbClient, "DBClient is not nil when attempting to initialize")
 }
 
 // TestUseCaseInit will test that the DB usecase was initialized.
 func TestUseCaseInit(t *testing.T) {
 	assert := assert.New(t)
 
-	dbHandler, err := NewDBHandler(testutils.DBHost, testutils.DBPort, testutils.DBUser,
+	dbClient, err := NewDBClient(testutils.DBHost, testutils.DBPort, testutils.DBUser,
 		testutils.DBPassword, testutils.DBName, testutils.DBType)
 
 	assert.NoError(err, "No error should be returned")
-	assert.NotNil(dbHandler.usecase, "usecase is not nil and initialized")
+	assert.NotNil(dbClient.usecase, "usecase is not nil and initialized")
 }
 
 // TODO (ccdle12): For Integration Tests
-// TestDBHandlerConnection
-// func TestDBHandlerConnection(t *testing.T) {
+// TestDBClientConnection
+// func TestDBClientConnection(t *testing.T) {
 // 	assert := assert.New(t)
 
-// 	dbHandler, err := NewDBHandler(testutils.DBHost, testutils.DBPort, testutils.DBUser,
+// 	dbClient, err := NewDBClient(testutils.DBHost, testutils.DBPort, testutils.DBUser,
 // 		testutils.DBPassword, testutils.DBName, testutils.DBType)
 
 // 	assert.NoError(err, "No error should be returned")
-// 	assert.NotNil(dbHandler.usecase, "usecase is not nil and initialized")
+// 	assert.NotNil(dbClient.usecase, "usecase is not nil and initialized")
 
-// 	dbHandler.Connect()
+// 	dbClient.Connect()
 // }
 
 // TODO (ccdle12): For Integration Tests
-// TestDBHandlerClose
-// func TestDBHandlerClose(t *testing.T) {
+// TestDBClientClose
+// func TestDBClientClose(t *testing.T) {
 // 	assert := assert.New(t)
 
-// 	dbHandler, err := NewDBHandler(testutils.DBHost, testutils.DBPort, testutils.DBUser,
+// 	dbClient, err := NewDBClient(testutils.DBHost, testutils.DBPort, testutils.DBUser,
 // 		testutils.DBPassword, testutils.DBName, testutils.DBType)
 
 // 	assert.NoError(err, "No error should be returned")
-// 	assert.NotNil(dbHandler.usecase, "usecase is not nil and initialized")
+// 	assert.NotNil(dbClient.usecase, "usecase is not nil and initialized")
 
-// 	dbHandler.Close()
+// 	dbClient.Close()
 // }

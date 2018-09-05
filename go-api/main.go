@@ -1,16 +1,16 @@
 package main
 
-// "github.com/ccdle12/Blocksage/go-api/dbhandler"
+// "github.com/ccdle12/Blocksage/go-api/dbclient"
 
 func main() {
 	//DBHanlder
 	// TODO: Intialise an Object to pass as argument?
-	// _, err := dbhandler.New("172.25.0.4", "5432", "postgres-dev", "12345", "dev", "postgres")
+	// _, err := dbclient.New("172.25.0.4", "5432", "postgres-dev", "12345", "dev", "postgres")
 	// if err != nil {
 	// 	fmt.Println("There was an error")
 	// }
 
-	// blockTable, err := blocktable.New(dbHandler)
+	// blockTable, err := blocktable.New(dbClient)
 	// if err != nil {
 	// 	fmt.Println("There was an error create blocktable")
 	// }
