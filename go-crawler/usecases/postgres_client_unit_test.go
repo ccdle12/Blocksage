@@ -4,25 +4,39 @@ package usecases
 
 import (
 	"github.com/ccdle12/Blocksage/go-crawler/test-utils"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 	"testing"
 )
 
+// ===========================================================
+// Testing Suite
+// ===========================================================
+type PostGresClientSuite struct {
+	suite.Suite
+	postgresClient *PostGresClient
+}
+
+// This gets run automatically by `go test` so we call `suite.Run` inside it
+func TestSuiteUnitPostGresClient(t *testing.T) {
+	// This is what actually runs our suite
+	suite.Run(t, new(PostGresClientSuite))
+}
+
+// Testing Lifecycle Hooks
+func (suite *PostGresClientSuite) SetupTest() {
+	suite.postgresClient = NewPostGresClient(testutils.DBConfig)
+}
+
+// ===========================================================
+// Unit Tests
+// ===========================================================
 // TestPostGresClientInit will test that we can initialize the handler.
-func TestPostGresClientInit(t *testing.T) {
-	assert := assert.New(t)
-
-	postgresHandler := NewPostGresClient(testutils.DBConfig)
-
-	assert.NotNil(postgresHandler, "postgresHandler should have been initialized")
+func (suite *PostGresClientSuite) TestPostGresClientInit() {
+	suite.NotNil(suite.postgresClient, "postgresHandler should have been initialized")
 }
 
 // TestConfigInit will test that the config was initialized.
-func TestConfigInit(t *testing.T) {
-	assert := assert.New(t)
-
-	postgresHandler := NewPostGresClient(testutils.DBConfig)
-
-	assert.NotNil(postgresHandler.cfg, "postgresHandler should have initialized a DBConfig")
-	assert.EqualValues(testutils.DBPort, postgresHandler.cfg.DBPort, "DBPort in cfg should be the same as the one in testutils")
+func (suite *PostGresClientSuite) TestConfigInit() {
+	suite.NotNil(suite.postgresClient.cfg, "postgresHandler should have initialized a DBConfig")
+	suite.EqualValues(testutils.DBPort, suite.postgresClient.cfg.DBPort, "DBPort in cfg should be the same as the one in testutils")
 }
