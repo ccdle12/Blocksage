@@ -105,7 +105,7 @@ func (suite *BitcoinClientSuite) TestMethodNotFoundError() {
 	suite.Nil(res, "Response should be nil since we have an error")
 }
 
-// TestMethodNotFoundError will test the client handling a Method Not Found Error from the Node.
+// TestNoBlockParams will test the client handling sending a node request without params.
 func (suite *BitcoinClientSuite) TestNoBlockParams() {
 	// blockResponse is a mock response
 	nodeResponseError := testutils.NodeResNoBlockParams
