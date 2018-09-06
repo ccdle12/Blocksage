@@ -4,7 +4,6 @@ import (
 	"github.com/ccdle12/Blocksage/go-crawler/models"
 	"net/http"
 	"net/http/httptest"
-	"time"
 )
 
 // The following variables are global testing constants
@@ -32,8 +31,6 @@ const (
 )
 
 var (
-	Client = &http.Client{Timeout: time.Duration(5 * time.Second)}
-
 	GetBlockParams = []string{"12345"}
 
 	NodeHeaders = models.NodeHeaders{
