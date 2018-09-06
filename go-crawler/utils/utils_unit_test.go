@@ -5,37 +5,8 @@ package utils
 import (
 	"github.com/ccdle12/Blocksage/go-crawler/test-utils"
 	"github.com/stretchr/testify/assert"
-	"net/http"
 	"testing"
-	"time"
 )
-
-// TestNewRequest will test the function to create a Node Request struct
-// to pass to the usecase.
-func TestNewRequest(t *testing.T) {
-	assert := assert.New(t)
-
-	httpClient := &http.Client{Timeout: time.Duration(5 * time.Second)}
-	nodeReq := NodeRequest(httpClient, testutils.NodeAddress, testutils.Username, testutils.Password, testutils.GetBlock, testutils.GetBlockParams)
-
-	// nodeReq should initialize
-	assert.NotNil(nodeReq, "nodeReq should not be nil")
-
-	// nodeReq should have the nodeAddress passed
-	assert.EqualValues(nodeReq.Headers.Address, testutils.NodeAddress)
-
-	// nodeReq should have the username passed
-	assert.EqualValues(nodeReq.Headers.Username, testutils.Username)
-
-	// nodeReq should have the password passed
-	assert.EqualValues(nodeReq.Headers.Password, testutils.Password)
-
-	// nodeReq should have the method passed, "getblock"
-	assert.EqualValues(nodeReq.Body.Method, testutils.GetBlock)
-
-	// nodeReq should have the params, "12345"
-	assert.EqualValues(nodeReq.Body.Params[0], testutils.GetBlockParams[0])
-}
 
 // TestConvNodeResToBlock is a function that will convert a NodeRespone to a Block.
 func TestConvNodeResToBlock(t *testing.T) {
