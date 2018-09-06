@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"fmt"
+	"github.com/ccdle12/Blocksage/go-crawler/injector"
 	"github.com/ccdle12/Blocksage/go-crawler/models"
 	"github.com/ccdle12/Blocksage/go-crawler/usecases"
 	"github.com/ccdle12/Blocksage/go-crawler/utils"
@@ -19,8 +21,12 @@ type NodeClient struct {
 // NewNodeClient is the constructor for the NodeClient and will return an instance of
 // the NodeClient struct.
 func NewNodeClient(client *http.Client, address, username, password string) *NodeClient {
+	fmt.Println("Address passed to NodeClient: " + address)
 	return &NodeClient{
-		client:   client,
+		client: client,
+		// TODO (ccdle12): Create a util function to format the address)
+		// address:  fmt.Sprintf("http://" + address + ":8332"),
+		// address needs to be formatted before passing
 		address:  address,
 		username: username,
 		password: password,
@@ -31,7 +37,7 @@ func NewNodeClient(client *http.Client, address, username, password string) *Nod
 // GetBlock calls the usecase to send a request according to the method and params,
 // the returned values are then converted into a Block Model.
 func (n NodeClient) GetBlock(blockHash string) (*models.Block, error) {
-	nodeReq := utils.NodeRequest(n.client, n.address, n.username, n.password, "getblock", []string{blockHash})
+	nodeReq := injector.NodeRequest(n.client, n.address, n.username, n.password, "getblock", []string{blockHash})
 
 	res, err := n.usecase.SendNodeRequest(nodeReq)
 	if err != nil {

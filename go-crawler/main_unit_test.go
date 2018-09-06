@@ -4,6 +4,7 @@ package main
 
 import (
 	"github.com/ccdle12/Blocksage/go-crawler/controllers"
+	"github.com/ccdle12/Blocksage/go-crawler/injector"
 	"github.com/ccdle12/Blocksage/go-crawler/models"
 	"github.com/ccdle12/Blocksage/go-crawler/test-utils"
 	"github.com/stretchr/testify/suite"
@@ -29,8 +30,8 @@ func TestSuiteMainUnitSuite(t *testing.T) {
 // Testing Lifecycle Hooks
 func (suite *MainUnitSuite) SetupTest() {
 	suite.block = &models.Block{}
-	suite.nodeClient = controllers.NewNodeClient(testutils.Client, testutils.NodeAddress, testutils.Username, testutils.Password)
-	suite.nodeClientController = controllers.NewNodeClient(testutils.Client, testutils.NodeAddress, testutils.Username, testutils.Password)
+	suite.nodeClient = controllers.NewNodeClient(injector.DefaultHTTPClient(), testutils.NodeAddress, testutils.Username, testutils.Password)
+	suite.nodeClientController = controllers.NewNodeClient(injector.DefaultHTTPClient(), testutils.NodeAddress, testutils.Username, testutils.Password)
 }
 
 // ===========================================================
