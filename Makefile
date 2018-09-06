@@ -33,7 +33,7 @@ integration-test-api:
 
 # crawler tests
 unit-test-crawler:
-	@docker exec -it crawler /bin/bash -c "go test -v ./... -tags=unit"
+	@docker exec -it crawler /bin/bash -c "go test ./... -tags=unit"
 
 integration-test-crawler:
 	@echo "[Running crawler integration tests...]"
