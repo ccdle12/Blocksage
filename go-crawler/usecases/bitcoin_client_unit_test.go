@@ -3,9 +3,9 @@
 package usecases
 
 import (
+	"github.com/ccdle12/Blocksage/go-crawler/injector"
 	"github.com/ccdle12/Blocksage/go-crawler/models"
 	"github.com/ccdle12/Blocksage/go-crawler/test-utils"
-	"github.com/ccdle12/Blocksage/go-crawler/utils"
 	"github.com/stretchr/testify/suite"
 	"testing"
 )
@@ -64,7 +64,7 @@ func (suite *BitcoinClientSuite) TestMockSendNodeRequest() {
 	server := testutils.TestServer(blockResponse)
 	defer server.Close()
 
-	nodeReq := utils.NodeRequest(server.Client(), server.URL, testutils.Username, testutils.Password, testutils.GetBlock, testutils.GetBlockParams)
+	nodeReq := injector.NodeRequest(server.Client(), server.URL, testutils.Username, testutils.Password, testutils.GetBlock, testutils.GetBlockParams)
 	res, err := suite.nodeClient.SendNodeRequest(nodeReq)
 
 	// err should be nil
@@ -80,7 +80,7 @@ func (suite *BitcoinClientSuite) TestGetNodeResponse() {
 	server := testutils.TestServer(blockResponse)
 	defer server.Close()
 
-	nodeReq := utils.NodeRequest(server.Client(), server.URL, testutils.Username, testutils.Password, testutils.GetBlock, testutils.GetBlockParams)
+	nodeReq := injector.NodeRequest(server.Client(), server.URL, testutils.Username, testutils.Password, testutils.GetBlock, testutils.GetBlockParams)
 	res, err := suite.nodeClient.SendNodeRequest(nodeReq)
 
 	// err should be nil
@@ -97,7 +97,7 @@ func (suite *BitcoinClientSuite) TestMethodNotFoundError() {
 	server := testutils.TestServer(nodeResponseError)
 	defer server.Close()
 
-	nodeReq := utils.NodeRequest(server.Client(), server.URL, testutils.Username, testutils.Password, testutils.GetBlock, testutils.GetBlockParams)
+	nodeReq := injector.NodeRequest(server.Client(), server.URL, testutils.Username, testutils.Password, testutils.GetBlock, testutils.GetBlockParams)
 	res, err := suite.nodeClient.SendNodeRequest(nodeReq)
 
 	suite.Error(err, "Should return an error")
@@ -112,7 +112,7 @@ func (suite *BitcoinClientSuite) TestNoBlockParams() {
 	server := testutils.TestServer(nodeResponseError)
 	defer server.Close()
 
-	nodeReq := utils.NodeRequest(server.Client(), server.URL, testutils.Username, testutils.Password, testutils.GetBlock, []string{""})
+	nodeReq := injector.NodeRequest(server.Client(), server.URL, testutils.Username, testutils.Password, testutils.GetBlock, []string{""})
 	res, err := suite.nodeClient.SendNodeRequest(nodeReq)
 
 	suite.Error(err, "Should return an error")
