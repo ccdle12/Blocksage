@@ -11,7 +11,7 @@ const (
 	// NodeClient variables
 	Username        = "dev123"
 	Password        = "secretpass"
-	NodeAddress     = "http://123.45.67.8:8332"
+	NodeAddress     = "123.45.67.8:8332"
 	GetBlock        = "getblock"
 	BlockHash0      = "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"
 	IncorrectMethod = "getalltxs"
@@ -34,7 +34,8 @@ var (
 	GetBlockParams = []string{"12345"}
 
 	NodeHeaders = models.NodeHeaders{
-		Address:  NodeAddress,
+		// TODO (ccdle12): use formatAddress
+		Address:  "http://" + NodeAddress,
 		Username: Username,
 		Password: Password,
 	}
