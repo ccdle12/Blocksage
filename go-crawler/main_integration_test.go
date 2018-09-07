@@ -29,22 +29,33 @@ func TestSuiteMainIntegration(t *testing.T) {
 // ===========================================================
 // TestDBConnection will create a DBClientUsecase and test we can open a connection to the DB.
 func (suite *MainIntegrationSuite) TestDBConnection() {
-	dbClient, err := controllers.NewDBClient(testutils.DBHost, testutils.DBPort, testutils.DBUser,
-		testutils.DBPassword, testutils.DBName, testutils.DBType)
+	dbClient, err := controllers.NewDBClient(
+		controllers.DBHost(testutils.DBHost),
+		controllers.DBPort(testutils.DBHost),
+		controllers.DBName(testutils.DBName),
+		controllers.DBUser(testutils.DBUser),
+		controllers.DBPassword(testutils.DBPassword),
+		controllers.DBType(testutils.DBType))
 
 	suite.NoError(err, "Should not return errors when initializing dbClient")
 
 	err = dbClient.Connect()
 	defer dbClient.Close()
 
+	// TODO (ccdle12): This needs to use injector.DBHost() since these addresses aren't real
 	suite.NoError(err, "Should not return error when connecting to the DB")
 	suite.NotNil(dbClient, "dbClient should not be nil")
 }
 
 // TestDBConnectionShouldFail will create a DBClientUsecase and test we can open a connection to the DB.
 func (suite *MainIntegrationSuite) TestDBConnectionShouldFail() {
-	dbClient, err := controllers.NewDBClient(testutils.IncorrectDBHost, testutils.DBPort, testutils.DBUser,
-		testutils.DBPassword, testutils.DBName, testutils.DBType)
+	dbClient, err := controllers.NewDBClient(
+		controllers.DBHost(testutils.DBHost),
+		controllers.DBPort(testutils.DBHost),
+		controllers.DBName(testutils.DBName),
+		controllers.DBUser(testutils.DBUser),
+		controllers.DBPassword(testutils.DBPassword),
+		controllers.DBType(testutils.DBType))
 
 	suite.NoError(err, "Should not return errors when initializing dbClient")
 
