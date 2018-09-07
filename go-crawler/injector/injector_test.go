@@ -62,3 +62,24 @@ func (suite *InjectorSuite) TestNewRequest() {
 func (suite *InjectorSuite) TestDefaultHttpClient() {
 	suite.NotNil(suite.httpClient)
 }
+
+// TestGetBTCDomain will test that we can retrieve the env variable of the BTC Mainnet Node Address.
+func (suite *InjectorSuite) TestGetBTCDomain() {
+	btcDomain := injector.BTCDomain()
+
+	suite.NotNil(btcDomain, "btcDomain should not be nil")
+}
+
+// TestGetBTCUsername will test that we can retrieve the env variable of the BTC Mainnet Node Username.
+func (suite *InjectorSuite) TestGetBTCUsername() {
+	btcUsername := injector.BTCUsername()
+
+	suite.NotNil(btcUsername, "btcUser should not be nil")
+}
+
+// TestGetBTCPassword will test that we can retrieve the env variable of the BTC Mainnet Node Password.
+func (suite *InjectorSuite) TestGetBTCPassword() {
+	btcPassword := injector.BTCPassword()
+
+	suite.NotNil(btcPassword, "btcPassword should not be nil")
+}

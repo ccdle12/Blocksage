@@ -1,13 +1,13 @@
+// Package injector provides behavior to inject certain structs and variables.
 package injector
 
 import (
 	"github.com/ccdle12/Blocksage/go-crawler/models"
 	"net/http"
+	"os"
 	"time"
 )
 
-// These variable are used throughout the project and can be referend here for dependency injection.
-// TODO (ccdle12): Move to an injector file?
 var (
 	defaultHTTPClient = &http.Client{Timeout: time.Duration(5 * time.Second)}
 )
@@ -32,4 +32,19 @@ func NodeRequest(client *http.Client, nodeAddress, username, password, method st
 // DefaultHTTPClient will inject the var defaultClient, this maybe modified to pass in a time in seconds to create an *httpClient
 func DefaultHTTPClient() *http.Client {
 	return defaultHTTPClient
+}
+
+// BTCDomain will retrieve the environment variable for the address of the BTC Mainnet Node.
+func BTCDomain() string {
+	return os.Getenv("BTC_MAIN_DOMAIN")
+}
+
+// BTCUsername will retrieve the environment variable for the password of the BTC Mainnet Node.
+func BTCUsername() string {
+	return os.Getenv("USERNAME")
+}
+
+// BTCPassword will retrieve the environment variable for the username of the BTC Mainnet Node.
+func BTCPassword() string {
+	return os.Getenv("PASSWORD")
 }
