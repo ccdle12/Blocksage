@@ -4,9 +4,8 @@ package controllers_test
 
 import (
 	"github.com/ccdle12/Blocksage/go-crawler/controllers"
-	"github.com/ccdle12/Blocksage/go-crawler/test-utils"
+	"github.com/ccdle12/Blocksage/go-crawler/injector"
 	"github.com/stretchr/testify/suite"
-	"os"
 	"testing"
 )
 
@@ -24,10 +23,9 @@ func TestSuiteIntegrationNodeClient(t *testing.T) {
 	suite.Run(t, new(NodeClientIntegrationSuite))
 }
 
-//TODO (ccdle12): Use OS.getenv here, but then import it into utils
 // Testing Lifecycle Hooks
 func (suite *NodeClientIntegrationSuite) SetupTest() {
-	suite.nodeClient = controllers.NewNodeClient(testutils.Client, os.Getenv("BTC_MAIN_DOMAIN"), os.Getenv("USERNAME"), os.Getenv("PASSWORD"))
+	suite.nodeClient = controllers.NewNodeClient(injector.DefaultHTTPClient(), injector.BTCDomain(), injector.BTCUsername(), injector.BTCPassword())
 }
 
 // ===========================================================
@@ -41,4 +39,5 @@ func (suite *NodeClientIntegrationSuite) TestRequestBlockFromNode() {
 
 	suite.NoError(err, "There should be no errors when requesting a block")
 	suite.NotNil(block, "Block should not be nil")
+	suite.NotNil(block.MerkleRoot, "Block MerkleRoot should not be nil")
 }
