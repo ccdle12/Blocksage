@@ -27,8 +27,13 @@ func TestSuiteUnitDBClient(t *testing.T) {
 // ===========================================================
 // TestInitDBClient will test that a DBClient can be initialized.
 func (suite *DBClientSuite) TestInit() {
-	dbClient, err := NewDBClient(testutils.DBHost, testutils.DBPort, testutils.DBUser,
-		testutils.DBPassword, testutils.DBName, testutils.DBType)
+	dbClient, err := NewDBClient(
+		DBPort(testutils.DBPort),
+		DBName(testutils.DBName),
+		DBUser(testutils.DBUser),
+		DBHost(testutils.DBHost),
+		DBPassword(testutils.DBPassword),
+		DBType(testutils.DBType))
 
 	suite.NoError(err, "There should be no error")
 	suite.NotNil(dbClient, "DBClient is not nil when attempting to initialize")
@@ -37,8 +42,13 @@ func (suite *DBClientSuite) TestInit() {
 // TestConfigInit will test that the cfg DBConfig struct was initialized by the
 // constructor.
 func (suite *DBClientSuite) TestConfigInit() {
-	dbClient, err := NewDBClient(testutils.DBHost, testutils.DBPort, testutils.DBUser,
-		testutils.DBPassword, testutils.DBName, testutils.DBType)
+	dbClient, err := NewDBClient(
+		DBPort(testutils.DBPort),
+		DBName(testutils.DBName),
+		DBUser(testutils.DBUser),
+		DBHost(testutils.DBHost),
+		DBPassword(testutils.DBPassword),
+		DBType(testutils.DBType))
 
 	suite.NoError(err, "There should be no error")
 	suite.NotNil(dbClient.cfg, "cfg is not nil when attempting to initialize")
@@ -48,8 +58,13 @@ func (suite *DBClientSuite) TestConfigInit() {
 // TestEmptyStringInit will test that we are passing an empty string as one of the parameters for
 // initializing a DBClient.
 func (suite *DBClientSuite) TestEmptyStringInit() {
-	dbClient, err := NewDBClient(testutils.DBHost, "", testutils.DBUser,
-		testutils.DBPassword, testutils.DBName, testutils.DBType)
+	dbClient, err := NewDBClient(
+		DBPort(testutils.DBPort),
+		DBName(testutils.DBName),
+		DBUser(testutils.DBUser),
+		DBHost(""),
+		DBPassword(testutils.DBPassword),
+		DBType(testutils.DBType))
 
 	suite.Error(err, "Error should be returned")
 	suite.EqualValues(err, utils.ErrPassingEmptyString, "The error return ErrPassingEmptyString")
@@ -58,8 +73,13 @@ func (suite *DBClientSuite) TestEmptyStringInit() {
 
 // TestUseCaseInit will test that the DB usecase was initialized.
 func (suite *DBClientSuite) TestUseCaseInit() {
-	dbClient, err := NewDBClient(testutils.DBHost, testutils.DBPort, testutils.DBUser,
-		testutils.DBPassword, testutils.DBName, testutils.DBType)
+	dbClient, err := NewDBClient(
+		DBPassword(testutils.DBPassword),
+		DBType(testutils.DBType),
+		DBPort(testutils.DBPort),
+		DBName(testutils.DBName),
+		DBUser(testutils.DBUser),
+		DBHost(testutils.DBHost))
 
 	suite.NoError(err, "No error should be returned")
 	suite.NotNil(dbClient.usecase, "usecase is not nil and initialized")
