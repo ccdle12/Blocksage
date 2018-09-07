@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/ccdle12/Blocksage/go-crawler/injector"
 	"github.com/ccdle12/Blocksage/go-crawler/models"
 	"github.com/ccdle12/Blocksage/go-crawler/usecases"
 	"github.com/ccdle12/Blocksage/go-crawler/utils"
 	"net/http"
+	"strings"
 )
 
 // NodeClient is a struct that will handle the connection to the Bitcoin Nodes.
@@ -18,16 +18,22 @@ type NodeClient struct {
 	usecase  usecases.NodeClient
 }
 
+// TODO (ccdle12): Move this function to utils
+func formatAddress(address string) string {
+	if strings.HasPrefix(address, "http://") {
+		return address
+	}
+
+	return "http://" + address
+}
+
 // NewNodeClient is the constructor for the NodeClient and will return an instance of
 // the NodeClient struct.
 func NewNodeClient(client *http.Client, address, username, password string) *NodeClient {
-	fmt.Println("Address passed to NodeClient: " + address)
 	return &NodeClient{
 		client: client,
 		// TODO (ccdle12): Create a util function to format the address)
-		// address:  fmt.Sprintf("http://" + address + ":8332"),
-		// address needs to be formatted before passing
-		address:  address,
+		address:  formatAddress(address),
 		username: username,
 		password: password,
 		usecase:  usecases.NewBitcoinClient(),
