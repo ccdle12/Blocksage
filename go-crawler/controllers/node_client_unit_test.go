@@ -34,6 +34,22 @@ func (suite *NodeClientSuite) TestInitNodeClient() {
 	suite.NotNil(nodeClient, "Should be able to initialize NodeClient.")
 }
 
+// TestNodeClientAddressFormat will test that when passed different formats of addresses it will conform to the correct format.
+func (suite *NodeClientSuite) TestAddressFormat() {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{"12345:8432", "http://12345:8432"},
+		{"http://12343:8080", "http://12343:8080"},
+	}
+
+	for _, t := range tests {
+		result := formatAddress(t.input)
+		suite.Equal(t.expected, result)
+	}
+}
+
 // TestGetBlock will call GetBlock() and return a Block Struct. The test will be using a mock test server.
 func (suite *NodeClientSuite) TestMockSendNodeRequest() {
 	// Create Test Server and pass it to NewNodeClient()
@@ -41,7 +57,7 @@ func (suite *NodeClientSuite) TestMockSendNodeRequest() {
 	defer server.Close()
 
 	nodeClient := NewNodeClient(server.Client(), server.URL, testutils.Username, testutils.Password)
-	suite.EqualValues(nodeClient.address, server.URL)
+	suite.EqualValues(server.URL, nodeClient.address)
 
 	// block, err := nodeClient.GetBlock("0000000000000000001ca03d9e1dd30d2cf49e44ba1569c8819e56cef88b67d4")
 
