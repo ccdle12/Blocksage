@@ -86,7 +86,7 @@ func NewDBClient(setters ...Option) (*DBClient, error) {
 		return nil, utils.ErrPassingEmptyString
 	}
 
-	// Init the use for the dbClient.
+	// Init the usecase for the dbClient.
 	args.dbClient.usecase = usecases.NewPostGresClient(args.dbClient.cfg)
 
 	return args.dbClient, nil
