@@ -6,7 +6,6 @@ DROP TABLE IF EXISTS "blocks";
 
 CREATE TABLE "blocks" (
     hash text UNIQUE NOT NULL,
-    confirmations bigint NOT NULL,
     strippedsize bigint NOT NULL,
     size bigint NOT NULL,
     weight bigint NOT NULL,
