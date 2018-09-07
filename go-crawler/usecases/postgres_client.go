@@ -83,11 +83,10 @@ func (p *PostGresClient) CloseConnection() error {
 // 3. create a table for tx and write txs to them
 // InsertBlock will write a Block to the DB
 func (p *PostGresClient) InsertBlock(b *models.Block) error {
-	_, err := p.db.Exec("INSERT INTO blocks (hash, confirmations, strippedsize, size, weight, height, version, versionHex, merkleroot, tx, time, mediantime, nonce, bits, difficulty, chainwork, nextblockhash) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) ON CONFLICT (hash) DO NOTHING;",
-		b.Hash, b.Confirmations, b.Strippedsize, b.Size, b.Weight, b.Height, b.Version,
+	_, err := p.db.Exec("INSERT INTO blocks (hash, strippedsize, size, weight, height, version, versionHex, merkleroot, tx, time, mediantime, nonce, bits, difficulty, chainwork, nextblockhash) VALUES ($1, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) ON CONFLICT (hash) DO NOTHING;",
+		b.Hash, b.Strippedsize, b.Size, b.Weight, b.Height, b.Version,
 		b.VersionHex, b.MerkleRoot, pq.Array(b.TX), b.Time, b.MedianTime, b.Nonce, b.Bits, b.Difficulty, b.Chainwork, b.NextBlockHash)
 
-	fmt.Println(err.Error())
 	if err != nil {
 		return utils.ErrFailedToInsertToDB
 	}
