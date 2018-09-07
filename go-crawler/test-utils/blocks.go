@@ -7,7 +7,6 @@ import (
 var (
 	Block0 = &models.Block{
 		Hash:              "0000000000000000001ca03d9e1dd30d2cf49e44ba1569c8819e56cef88b67d4",
-		Confirmations:     3,
 		Strippedsize:      194985,
 		Size:              329911,
 		Weight:            914866,
