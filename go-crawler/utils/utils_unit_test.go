@@ -4,26 +4,37 @@ package utils
 
 import (
 	"github.com/ccdle12/Blocksage/go-crawler/test-utils"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 	"testing"
 )
 
+// ===========================================================
+// Testing Suite
+// ===========================================================
+type UtilsUnitSuite struct {
+	suite.Suite
+}
+
+// This gets run automatically by `go test` so we call `suite.Run` inside it
+func TestSuiteUtilsUnit(t *testing.T) {
+	// This is what actually runs our suite
+	suite.Run(t, new(UtilsUnitSuite))
+}
+
+// ===========================================================
+// Unit Tests
+// ===========================================================
 // TestConvNodeResToBlock is a function that will convert a NodeRespone to a Block.
-func TestConvNodeResToBlock(t *testing.T) {
-	assert := assert.New(t)
-
+func (suite *UtilsUnitSuite) TestConvNodeResToBlock() {
 	nodeRes := testutils.NodeResponse
-
 	block, err := ConvNodeResToBlock(nodeRes)
 
-	assert.NoError(err, "There should not be an error when converting Node Response to a Block")
-	assert.NotNil(block, "block should not be nil")
+	suite.NoError(err, "There should not be an error when converting Node Response to a Block")
+	suite.NotNil(block, "block should not be nil")
 }
 
 // TestEmptyString will test the util function if a string is empty/zero valued
-func TestEmptyString(t *testing.T) {
-	assert := assert.New(t)
-
+func (suite *UtilsUnitSuite) TestEmptyString() {
 	tests := []struct {
 		input  []string
 		output bool
@@ -43,23 +54,41 @@ func TestEmptyString(t *testing.T) {
 
 	for _, eachTest := range tests {
 		result := EmptyString(eachTest.input...)
-		assert.Equal(eachTest.output, result, "The tests for empty string should match the output and results")
+		suite.Equal(eachTest.output, result, "The tests for empty string should match the output and results")
 	}
 }
 
 // TestEmptyStringNotUsingSlices will test EmptyString(), sending comma separated arguments
-func TestEmptyStringNotUsingSlices(t *testing.T) {
-	assert := assert.New(t)
+func (suite *UtilsUnitSuite) TestEmptyStringNotUsingSlices() {
 
-	result1 := EmptyString("", "sdf", "dfdf", "", "123214")
-	result2 := EmptyString("asdf", "sdf", "dfdf", "", "123214")
-	result3 := EmptyString("asdf", "sdf", "dfdf", "fdsaf", "123214")
-	result4 := EmptyString("")
-	result5 := EmptyString("adsf")
+	tests := []struct {
+		actual   bool
+		expected bool
+	}{
+		{EmptyString("", "sdf", "dfdf", "", "123214"), true},
+		{EmptyString("asdf", "sdf", "dfdf", "", "123214"), true},
+		{EmptyString("asdf", "sdf", "dfdf", "fdsaf", "123214"), false},
+		{EmptyString(""), true},
+		{EmptyString("adsf"), false},
+	}
 
-	assert.True(result1, "result1 should be true since we have sent empty strings to the function")
-	assert.True(result2, "result2 should be true since we have sent empty strings to the function")
-	assert.False(result3, "result3 should be false since we have sent empty strings to the function")
-	assert.True(result4, "result4 should be true since we have sent empty strings to the function")
-	assert.False(result5, "result5 should be false since we have sent empty strings to the function")
+	for _, eachTest := range tests {
+		suite.Equal(eachTest.actual, eachTest.expected, "actual should match expected")
+	}
+}
+
+// TestNodeClientAddressFormat will test that when passed different formats of addresses it will conform to the correct format.
+func (suite *UtilsUnitSuite) TestAddressFormat() {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{"12345:8432", "http://12345:8432"},
+		{"http://12343:8080", "http://12343:8080"},
+	}
+
+	for _, t := range tests {
+		result := FormatAddress(t.input)
+		suite.Equal(t.expected, result)
+	}
 }

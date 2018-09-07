@@ -5,6 +5,7 @@ import (
 	"github.com/ccdle12/Blocksage/go-crawler/models"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 // ConvBodyToByte is a function that will convert the body of a http.Response to a []byte.
@@ -54,4 +55,13 @@ func EmptyString(input ...string) bool {
 	}
 
 	return false
+}
+
+// FormatAddress will receive an address and format it, to be used in the project.
+func FormatAddress(address string) string {
+	if strings.HasPrefix(address, "http://") {
+		return address
+	}
+
+	return "http://" + address
 }
