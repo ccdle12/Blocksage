@@ -1,8 +1,8 @@
 package main
 
 import (
-	// "github.com/ccdle12/Blocksage/go-crawler/controllers"
-	// "github.com/ccdle12/Blocksage/go-crawler/test-utils"
+	"github.com/ccdle12/Blocksage/go-crawler/controllers"
+	"github.com/ccdle12/Blocksage/go-crawler/injector"
 	"github.com/stretchr/testify/suite"
 	"testing"
 )
@@ -26,39 +26,41 @@ func TestSuiteMainIntegration(t *testing.T) {
 // Unit Tests
 // ===========================================================
 // TestDBConnection will create a DBClientUsecase and test we can open a connection to the DB.
-// func (suite *MainIntegrationSuite) TestDBConnection() {
-// 	dbClient, err := controllers.NewDBClient(
-// 		controllers.DBHost(testutils.DBHost),
-// 		controllers.DBPort(testutils.DBHost),
-// 		controllers.DBName(testutils.DBName),
-// 		controllers.DBUser(testutils.DBUser),
-// 		controllers.DBPassword(testutils.DBPassword),
-// 		controllers.DBType(testutils.DBType))
+func (suite *MainIntegrationSuite) TestDBConnection() {
+	dbClient, err := controllers.NewDBClient(
+		controllers.DBPort(injector.PostgresPort()),
+		controllers.DBName(injector.PostgresDBName()),
+		controllers.DBUser(injector.PostgresUserName()),
+		controllers.DBHost(injector.PostgresDomain()),
+		controllers.DBPassword(injector.PostgresPassword()),
+		controllers.DBType("postgres"),
+		controllers.PostgresClient())
 
-// 	suite.NoError(err, "Should not return errors when initializing dbClient")
+	suite.NoError(err, "Should not return errors when initializing dbClient")
 
-// 	err = dbClient.Connect()
-// 	defer dbClient.Close()
+	err = dbClient.Connect()
+	defer dbClient.Close()
 
-// 	// TODO (ccdle12): This needs to use injector.DBHost() since these addresses aren't real
-// 	suite.NoError(err, "Should not return error when connecting to the DB")
-// 	suite.NotNil(dbClient, "dbClient should not be nil")
-// }
+	// TODO (ccdle12): This needs to use injector.DBHost() since these addresses aren't real
+	suite.NoError(err, "Should not return error when connecting to the DB")
+	suite.NotNil(dbClient, "dbClient should not be nil")
+}
 
-// // TestDBConnectionShouldFail will create a DBClientUsecase and test we can open a connection to the DB.
-// func (suite *MainIntegrationSuite) TestDBConnectionShouldFail() {
-// 	dbClient, err := controllers.NewDBClient(
-// 		controllers.DBHost(testutils.DBHost),
-// 		controllers.DBPort(testutils.DBHost),
-// 		controllers.DBName(testutils.DBName),
-// 		controllers.DBUser(testutils.DBUser),
-// 		controllers.DBPassword(testutils.DBPassword),
-// 		controllers.DBType(testutils.DBType))
+// TestDBConnectionShouldFail will since we are trying to connect to a db that does not exist.
+func (suite *MainIntegrationSuite) TestDBConnectionShouldFail() {
+	dbClient, err := controllers.NewDBClient(
+		controllers.DBPort(injector.PostgresPort()),
+		controllers.DBName(injector.PostgresDBName()),
+		controllers.DBUser(injector.PostgresUserName()),
+		controllers.DBHost(injector.PostgresDomain()),
+		controllers.DBPassword(injector.PostgresPassword()),
+		controllers.DBType("db does not exist"),
+		controllers.PostgresClient())
 
-// 	suite.NoError(err, "Should not return errors when initializing dbClient")
+	suite.NoError(err, "Should not return errors when initializing dbClient")
 
-// 	err = dbClient.Connect()
-// 	defer dbClient.Close()
+	err = dbClient.Connect()
+	defer dbClient.Close()
 
-// 	suite.Error(err, "Should return error trying to connect to a DB that doesn't exist")
-// }
+	suite.Error(err, "Should return error trying to connect to a DB that doesn't exist")
+}
