@@ -83,3 +83,41 @@ func (suite *InjectorSuite) TestGetBTCPassword() {
 
 	suite.NotNil(btcPassword, "btcPassword should not be nil")
 }
+
+// TestPostgresDBName will test that we can retrieve the env variable of the Postgres DB Name.
+func (suite *InjectorSuite) TestPostgresDBName() {
+	postgresDBName := injector.PostgresDBName()
+
+	suite.NotNil(postgresDBName, "postgresDBName should not be nil")
+}
+
+// TestPostgresUserName will test that we can retrieve the env variable of the Postgres User Name.
+func (suite *InjectorSuite) TestPostgresUserName() {
+	postgresUsername := injector.PostgresUserName()
+
+	suite.NotNil(postgresUsername, "postgresUsername should not be nil")
+}
+
+// TestPostgresPassword will test that we can retrieve the env variable of the Postgres Password.
+func (suite *InjectorSuite) TestPostgresPassword() {
+	postgresPassword := injector.PostgresPassword()
+
+	suite.NotNil(postgresPassword, "postgresPassword should not be nil")
+}
+
+// TODO (ccdle12): These tests only work on the local version
+// TestPostgresDomain will test that we can retrieve the env variable of the Postgres Domain.
+func (suite *InjectorSuite) TestPostgresDomain() {
+	postgresDomain := injector.PostgresDomain()
+
+	suite.NotNil(postgresDomain, "postgresDomain should not be nil")
+	suite.Equal("172.25.0.4", postgresDomain, "postgresDomain should equal 172.25.0.4")
+}
+
+// TestPostgresPort will test that we can retrieve the env variable of the Postgres Port.
+func (suite *InjectorSuite) TestPostgresPort() {
+	postgresPort := injector.PostgresPort()
+
+	suite.NotNil(postgresPort, "postgresPort should not be nil")
+	suite.Equal("5432", postgresPort, "postgresPort should equal 5432")
+}
