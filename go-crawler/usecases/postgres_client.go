@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"github.com/ccdle12/Blocksage/go-crawler/models"
 	"github.com/ccdle12/Blocksage/go-crawler/utils"
@@ -9,7 +10,7 @@ import (
 	// Using the blank identifier in order to solely provide the side-effects of the package.
 	// Essentially the side effect is calling the `init()`
 	// method of `lib/pq`: func init () {  sql.Register("postgres", &Driver{} }
-	"github.com/lib/pq"
+	_ "github.com/lib/pq"
 )
 
 // PostGresClient struct is the concrete implementation of the Postgres
@@ -26,7 +27,6 @@ func NewPostGresClient(cfg *models.DBConfig) *PostGresClient {
 	}
 }
 
-// TODO (ccdle12): This will need it's own integration tests
 // OpenConnection will create a connection to the DB.
 func (p *PostGresClient) OpenConnection() error {
 	if err := p.connect(); err != nil {
@@ -46,7 +46,7 @@ func (p *PostGresClient) connect() error {
 		p.cfg.DBUser, p.cfg.DBPassword, p.cfg.DBName, p.cfg.DBHost, p.cfg.DBPort))
 
 	if err != nil {
-		return utils.ErrFailedToOpenDBConnection
+		return utils.FailedDBConnection(err)
 	}
 
 	// assign self the DB
@@ -63,7 +63,6 @@ func (p *PostGresClient) ping() error {
 	return nil
 }
 
-// TODO (ccdle12): This will need it's own integration tests
 // CloseConnection will close the connection to the DB.
 func (p *PostGresClient) CloseConnection() error {
 	if p.db == nil {
@@ -77,18 +76,20 @@ func (p *PostGresClient) CloseConnection() error {
 	return nil
 }
 
-// TODO (ccdle12): Fix InsertBlock,
-// 1. make height the primary key
-// 2. remove confirmations
-// 3. create a table for tx and write txs to them
 // InsertBlock will write a Block to the DB
 func (p *PostGresClient) InsertBlock(b *models.Block) error {
-	_, err := p.db.Exec("INSERT INTO blocks (hash, strippedsize, size, weight, height, version, versionHex, merkleroot, tx, time, mediantime, nonce, bits, difficulty, chainwork, nextblockhash) VALUES ($1, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) ON CONFLICT (hash) DO NOTHING;",
+	// TODO (ccdle12): move this to utils
+	fmt.Println(b.Hash)
+	if b == nil {
+		return errors.New("Block is Null in DB Client usecase")
+	}
+
+	_, err := p.db.Exec("INSERT INTO blocks (hash, strippedsize, size, weight, height, version, versionHex, merkleroot, foreignkeytx, time, mediantime, nonce, bits, difficulty, chainwork, nextblockhash) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) ON CONFLICT (hash) DO NOTHING;",
 		b.Hash, b.Strippedsize, b.Size, b.Weight, b.Height, b.Version,
-		b.VersionHex, b.MerkleRoot, pq.Array(b.TX), b.Time, b.MedianTime, b.Nonce, b.Bits, b.Difficulty, b.Chainwork, b.NextBlockHash)
+		b.VersionHex, b.MerkleRoot, b.Hash, b.Time, b.MedianTime, b.Nonce, b.Bits, b.Difficulty, b.Chainwork, b.NextBlockHash)
 
 	if err != nil {
-		return utils.ErrFailedToInsertToDB
+		return utils.FailedToInsertToDB(err)
 	}
 
 	return nil
