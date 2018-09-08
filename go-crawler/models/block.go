@@ -3,8 +3,6 @@ package models
 // Block is the struct which holds all the details of a Block from
 // the Bitcoin Blockchain.
 type Block struct {
-	// ID                int64    `json:"-"`
-	// Confirmations     int      `json:"confirmations"`
 	Hash              string   `json:"hash"`
 	Strippedsize      int      `json:"strippedsize"`
 	Size              int      `json:"size"`
@@ -14,6 +12,7 @@ type Block struct {
 	VersionHex        string   `json:"versionHex"`
 	MerkleRoot        string   `json:"merkleroot"`
 	TX                []string `json:"tx"`
+	FKeyTX            string   `json:"fktx"`
 	Time              int      `json:"time"`
 	MedianTime        int      `json:"mediantime"`
 	Nonce             int      `json:"nonce"`
