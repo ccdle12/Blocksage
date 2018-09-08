@@ -33,7 +33,8 @@ func (suite *DBClientSuite) TestInit() {
 		DBUser(testutils.DBUser),
 		DBHost(testutils.DBHost),
 		DBPassword(testutils.DBPassword),
-		DBType(testutils.DBType))
+		DBType(testutils.DBType),
+		PostgresClient())
 
 	suite.NoError(err, "There should be no error")
 	suite.NotNil(dbClient, "DBClient is not nil when attempting to initialize")
@@ -48,7 +49,8 @@ func (suite *DBClientSuite) TestConfigInit() {
 		DBUser(testutils.DBUser),
 		DBHost(testutils.DBHost),
 		DBPassword(testutils.DBPassword),
-		DBType(testutils.DBType))
+		DBType(testutils.DBType),
+		PostgresClient())
 
 	suite.NoError(err, "There should be no error")
 	suite.NotNil(dbClient.cfg, "cfg is not nil when attempting to initialize")
@@ -64,7 +66,8 @@ func (suite *DBClientSuite) TestEmptyStringInit() {
 		DBUser(testutils.DBUser),
 		DBHost(""),
 		DBPassword(testutils.DBPassword),
-		DBType(testutils.DBType))
+		DBType(testutils.DBType),
+		PostgresClient())
 
 	suite.Error(err, "Error should be returned")
 	suite.EqualValues(err, utils.ErrPassingEmptyString, "The error return ErrPassingEmptyString")
@@ -79,36 +82,9 @@ func (suite *DBClientSuite) TestUseCaseInit() {
 		DBPort(testutils.DBPort),
 		DBName(testutils.DBName),
 		DBUser(testutils.DBUser),
-		DBHost(testutils.DBHost))
+		DBHost(testutils.DBHost),
+		TestPostgresClient())
 
 	suite.NoError(err, "No error should be returned")
 	suite.NotNil(dbClient.usecase, "usecase is not nil and initialized")
 }
-
-// TODO (ccdle12): For Integration Tests
-// TestDBClientConnection
-// func TestDBClientConnection(t *testing.T) {
-// 	suite. := suite.New(t)
-
-// 	dbClient, err := NewDBClient(testutils.DBHost, testutils.DBPort, testutils.DBUser,
-// 		testutils.DBPassword, testutils.DBName, testutils.DBType)
-
-// 	suite.NoError(err, "No error should be returned")
-// 	suite.NotNil(dbClient.usecase, "usecase is not nil and initialized")
-
-// 	dbClient.Connect()
-// }
-
-// TODO (ccdle12): For Integration Tests
-// TestDBClientClose
-// func TestDBClientClose(t *testing.T) {
-// 	suite. := suite.New(t)
-
-// 	dbClient, err := NewDBClient(testutils.DBHost, testutils.DBPort, testutils.DBUser,
-// 		testutils.DBPassword, testutils.DBName, testutils.DBType)
-
-// 	suite.NoError(err, "No error should be returned")
-// 	suite.NotNil(dbClient.usecase, "usecase is not nil and initialized")
-
-// 	dbClient.Close()
-// }
