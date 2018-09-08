@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"github.com/ccdle12/Blocksage/go-crawler/models"
 	"github.com/ccdle12/Blocksage/go-crawler/usecases"
 	"github.com/ccdle12/Blocksage/go-crawler/utils"
@@ -63,6 +64,21 @@ func DBType(dbType string) Option {
 	}
 }
 
+// PostgresClient is a functional paramater to initialize the Postgres Client usecase in config.
+func PostgresClient() Option {
+	return func(args *Options) {
+		args.dbClient.usecase = usecases.NewPostGresClient(args.dbClient.cfg)
+	}
+}
+
+// TestPostgresClient is a functional parameter to initialize the Test Postgres Client usecase in config.
+// The TestPostgresClient will write data to test tables
+func TestPostgresClient() Option {
+	return func(args *Options) {
+		args.dbClient.usecase = usecases.TestNewPostGresClient(args.dbClient.cfg)
+	}
+}
+
 // NewDBClient will return an instance of the DBClient that will read/write from different
 // usecases.
 func NewDBClient(setters ...Option) (*DBClient, error) {
@@ -87,12 +103,11 @@ func NewDBClient(setters ...Option) (*DBClient, error) {
 	}
 
 	// Init the usecase for the dbClient.
-	args.dbClient.usecase = usecases.NewPostGresClient(args.dbClient.cfg)
+	// args.dbClient.usecase = usecases.NewPostGresClient(args.dbClient.cfg)
 
 	return args.dbClient, nil
 }
 
-// TODO (ccdle12): Needs Integration Testing
 // Connect will request the usecase to open a connection to the DB.
 func (d *DBClient) Connect() error {
 	if err := d.usecase.OpenConnection(); err != nil {
@@ -102,10 +117,23 @@ func (d *DBClient) Connect() error {
 	return nil
 }
 
-// TODO (ccdle12): Needs Integration Testing
 // Close will request the usecase to close the connection to the DB.
 func (d *DBClient) Close() error {
 	if err := d.usecase.CloseConnection(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// WriteBlock will request the usecase to write a block to the DB.
+func (d *DBClient) WriteBlock(block *models.Block) error {
+	// TODO (ccdle12): move the error to utils
+	if block == nil {
+		return errors.New("Block is nil")
+	}
+
+	if err := d.usecase.InsertBlock(block); err != nil {
 		return err
 	}
 
