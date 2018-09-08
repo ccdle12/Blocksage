@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	Block0 = &models.Block{
+	Block538770 = &models.Block{
 		Hash:              "0000000000000000001ca03d9e1dd30d2cf49e44ba1569c8819e56cef88b67d4",
 		Strippedsize:      194985,
 		Size:              329911,
@@ -14,7 +14,8 @@ var (
 		Version:           536870912,
 		VersionHex:        "20000000",
 		MerkleRoot:        "d4ffdec00fec5c29ceb948a70c250d07e2254c67ac93b31adc977a8dde9b046c",
-		TX:                []string{},
+		TX:                TXBlock538770,
+		FKeyTX:            "",
 		Time:              1535396467,
 		MedianTime:        1535394491,
 		Nonce:             2294488336,
