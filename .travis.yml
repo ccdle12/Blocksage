@@ -5,14 +5,12 @@ language: golang
 services: 
   - docker
 
-before_install:
-  # WORK AROUND due to port 5432 already in use in Travis
-  # Shut down postgres because it blocks our db container's port map to :5432
+before_script:
+  # Disable services enabled by default
+  - sudo service mysql stop
   - sudo service postgresql stop
-  # Wait for it to stop
-  - while sudo lsof -Pi :5432 -sTCP:LISTEN -t; do sleep 1; done
-  # Setup shell environment
-  - make
-
+  
 script:
+  - make
+  - sleep 5;
   - make test-crawler
