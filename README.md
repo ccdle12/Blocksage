@@ -18,18 +18,16 @@ $ make
 ```
 
 # Run Tests
-## API Test
+## Crawler Tests
+
+* All Tests
+
+``` make test-crawler```
+
 * Unit Tests
-```
-$ make test-api-unittest
-```
+
+``` make utest-crawler```
 
 * Integration Tests
-```
-$ make test-api-integration
-```
 
-* All tests
-```
-$ make check
-```
+``` make itest-crawler```
