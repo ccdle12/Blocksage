@@ -1,0 +1,12 @@
+sduo: required
+
+language: golang
+
+services: 
+  - docker
+
+before_install:
+  - make
+
+script:
+  - make test-crawler
