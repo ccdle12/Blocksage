@@ -109,7 +109,7 @@ func (suite *InjectorSuite) TestPostgresDomain() {
 	postgresDomain := PostgresDomain()
 
 	suite.NotNil(postgresDomain, "postgresDomain should not be nil")
-	suite.Equal("172.25.0.4", postgresDomain, "postgresDomain should equal 172.25.0.4")
+	suite.Equal("db", postgresDomain, "postgresDomain should equal db")
 }
 
 // TestPostgresPort will test that we can retrieve the env variable of the Postgres Port.
