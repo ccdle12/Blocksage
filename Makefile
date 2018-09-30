@@ -22,7 +22,7 @@ check: test-api test-crawler
 # service specific tests
 test-api: unit-test-api integration-test-crawler
 
-test-crawler: unit-test-crawler integration-test-crawler
+test-crawler: utest-crawler itest-crawler
 
 # api tests
 utest-api:
