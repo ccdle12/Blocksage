@@ -120,27 +120,13 @@ func (suite *MainIntegrationSuite) TestWriteBlock() {
 	defer testDBClient.Close()
 	suite.NoError(err, "There should be no error connecting to the DB")
 
-	// Create a node Controller to communicate with a Blockchain Node.
-	var nodeClient nodeclient.Controller
-	nodeClient = nodeclient.New(
-		injector.DefaultHTTPClient(),
-		injector.BTCDomain(),
-		injector.BTCUsername(),
-		injector.BTCPassword())
-
 	// Retrieve blocks and transactions.
 	block := testutils.Block506664
-	txs := block.TX
+	// txs := block.TX
 
-	// call GetTransactions on transaction hash 4.
-	tx, err := nodeClient.GetTransaction(txs[4])
-	suite.NoError(err, "There should be no error getting transaction 4 from the node.")
-	suite.NotNil(tx, "Tx retrieved should not be nil")
-	suite.Equal("b1bdf0b2ac321b00545598043c0554cf6b5c6fa61ce36b30cf7b3addcccc0bf3", tx.Hash)
-
-	// Write the returned transaction to the DB.
-	err = testDBClient.WriteTransaction(tx)
-	suite.NoError(err, "There should be no error writing transaction")
+	// Write the Block to the db
+	err = testDBClient.WriteBlock(block)
+	suite.NoError(err, "Should be able to write block to the db")
 }
 
 // TestWriteMultipleTXs will test the flow for iterating over a slice of hashes and writing them.
