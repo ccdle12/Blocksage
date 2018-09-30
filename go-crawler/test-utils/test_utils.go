@@ -17,7 +17,7 @@ const (
 	IncorrectMethod = "getalltxs"
 
 	// DBClientUsecase variables
-	DBHost          = "172.25.0.4"
+	DBHost          = "db"
 	IncorrectDBHost = "123.45.6.7"
 	DBPort          = "5432"
 	DBUser          = "postgres-dev"
