@@ -25,17 +25,17 @@ test-api: unit-test-api integration-test-crawler
 test-crawler: unit-test-crawler integration-test-crawler
 
 # api tests
-unit-test-api:
+utest-api:
 	@docker exec -it api /bin/bash -c "go test -v ./... -tags=unit"
 
-integration-test-api:
+itest-api:
 	@docker exec -it api /bin/bash -c "go test -v ./... -tags=integration"
 
 # crawler tests
-unit-test-crawler:
+utest-crawler:
 	@docker exec -it crawler /bin/bash -c "go test -v ./... -tags=unit"
 
-integration-test-crawler:
+itest-crawler:
 	@echo "[Running crawler integration tests...]"
 	@docker exec -it crawler /bin/bash -c "go test -v ./... -tags=integration"
 
