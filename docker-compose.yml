@@ -29,10 +29,12 @@ services:
       BTC_USERNAME: $BTC_MAINNET_USERNAME
       BTC_PASSWORD: $BTC_MAINNET_PASSWORD
       BTC_MAIN_DOMAIN: $BTC_MAINNET_DOMAIN_EXTERNAL
-      POSTGRES_DB_DOMAIN: $DB_DOMAIN
+      POSTGRES_DB_DOMAIN: db:5432
       POSTGRES_DB_NAME: $DB_NAME
       POSTGRES_USER: $DB_USER
       POSTGRES_PASSWORD: $DB_PASSWORD
+    networks:
+      - blocksage
   
   front-end:
     container_name: 'front-end'
@@ -42,6 +44,8 @@ services:
       - /front-end/blocksage/node_modules/
     ports:
       - 3000:3000
+    networks:
+      - blocksage
 
   db:
     container_name: 'db'
@@ -54,19 +58,15 @@ services:
     ports:
       - 5432:5432
     networks:
-      default:
-        ipv4_address: $DB_SUBNET
+      - blocksage
 
   adminer:
     container_name: 'adminer'
     image: adminer
     ports:
       - 8080:8080
+    networks:
+      - blocksage
 
-# TODO (ccdle12): setup networks like in wordpress project
 networks:
-  default:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.25.0.0/24
+  blocksage:
