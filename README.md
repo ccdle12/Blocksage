@@ -1,5 +1,5 @@
 # Blocksage - Bitcoin Block-Explorer
-[![Build Status](https://semaphoreci.com/api/v1/ccdle12/blocksage/branches/master/badge.svg)](https://semaphoreci.com/ccdle12/blocksage)
+[![Build Status](https://travis-ci.com/ccdle12/Blocksage.svg?branch=master)](https://travis-ci.com/ccdle12/Blocksage)
 
 The project currently consists of:
 * Front-End: VueJS
