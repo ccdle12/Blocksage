@@ -1,14 +1,12 @@
 // +build unit
 
-package injector_test
+package injector
 
 import (
-	"github.com/ccdle12/Blocksage/go-crawler/injector"
 	"github.com/ccdle12/Blocksage/go-crawler/test-utils"
 	"github.com/stretchr/testify/suite"
 	"net/http"
 	"testing"
-	// "time"
 )
 
 // ===========================================================
@@ -26,7 +24,7 @@ func TestInjectorSuite(t *testing.T) {
 }
 
 func (suite *InjectorSuite) SetupTest() {
-	suite.httpClient = injector.DefaultHTTPClient()
+	suite.httpClient = DefaultHTTPClient()
 }
 
 // ===========================================================
@@ -37,7 +35,7 @@ func (suite *InjectorSuite) SetupTest() {
 // to pass to the usecase.
 func (suite *InjectorSuite) TestNewRequest() {
 	// TODO (ccdle12): Move http client to injector
-	nodeReq := injector.NodeRequest(suite.httpClient, testutils.NodeAddress, testutils.Username, testutils.Password, testutils.GetBlock, testutils.GetBlockParams)
+	nodeReq := NodeRequest(suite.httpClient, testutils.NodeAddress, testutils.Username, testutils.Password, testutils.GetBlock, testutils.GetBlockParams)
 
 	// nodeReq should initialize
 	suite.NotNil(nodeReq, "nodeReq should not be nil")
@@ -65,42 +63,42 @@ func (suite *InjectorSuite) TestDefaultHttpClient() {
 
 // TestGetBTCDomain will test that we can retrieve the env variable of the BTC Mainnet Node Address.
 func (suite *InjectorSuite) TestGetBTCDomain() {
-	btcDomain := injector.BTCDomain()
+	btcDomain := BTCDomain()
 
 	suite.NotNil(btcDomain, "btcDomain should not be nil")
 }
 
 // TestGetBTCUsername will test that we can retrieve the env variable of the BTC Mainnet Node Username.
 func (suite *InjectorSuite) TestGetBTCUsername() {
-	btcUsername := injector.BTCUsername()
+	btcUsername := BTCUsername()
 
 	suite.NotNil(btcUsername, "btcUser should not be nil")
 }
 
 // TestGetBTCPassword will test that we can retrieve the env variable of the BTC Mainnet Node Password.
 func (suite *InjectorSuite) TestGetBTCPassword() {
-	btcPassword := injector.BTCPassword()
+	btcPassword := BTCPassword()
 
 	suite.NotNil(btcPassword, "btcPassword should not be nil")
 }
 
 // TestPostgresDBName will test that we can retrieve the env variable of the Postgres DB Name.
 func (suite *InjectorSuite) TestPostgresDBName() {
-	postgresDBName := injector.PostgresDBName()
+	postgresDBName := PostgresDBName()
 
 	suite.NotNil(postgresDBName, "postgresDBName should not be nil")
 }
 
 // TestPostgresUserName will test that we can retrieve the env variable of the Postgres User Name.
 func (suite *InjectorSuite) TestPostgresUserName() {
-	postgresUsername := injector.PostgresUserName()
+	postgresUsername := PostgresUserName()
 
 	suite.NotNil(postgresUsername, "postgresUsername should not be nil")
 }
 
 // TestPostgresPassword will test that we can retrieve the env variable of the Postgres Password.
 func (suite *InjectorSuite) TestPostgresPassword() {
-	postgresPassword := injector.PostgresPassword()
+	postgresPassword := PostgresPassword()
 
 	suite.NotNil(postgresPassword, "postgresPassword should not be nil")
 }
@@ -108,7 +106,7 @@ func (suite *InjectorSuite) TestPostgresPassword() {
 // TODO (ccdle12): These tests only work on the local version
 // TestPostgresDomain will test that we can retrieve the env variable of the Postgres Domain.
 func (suite *InjectorSuite) TestPostgresDomain() {
-	postgresDomain := injector.PostgresDomain()
+	postgresDomain := PostgresDomain()
 
 	suite.NotNil(postgresDomain, "postgresDomain should not be nil")
 	suite.Equal("172.25.0.4", postgresDomain, "postgresDomain should equal 172.25.0.4")
@@ -116,7 +114,7 @@ func (suite *InjectorSuite) TestPostgresDomain() {
 
 // TestPostgresPort will test that we can retrieve the env variable of the Postgres Port.
 func (suite *InjectorSuite) TestPostgresPort() {
-	postgresPort := injector.PostgresPort()
+	postgresPort := PostgresPort()
 
 	suite.NotNil(postgresPort, "postgresPort should not be nil")
 	suite.Equal("5432", postgresPort, "postgresPort should equal 5432")

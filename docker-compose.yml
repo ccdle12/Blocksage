@@ -62,7 +62,8 @@ services:
     image: adminer
     ports:
       - 8080:8080
-      
+
+# TODO (ccdle12): setup networks like in wordpress project
 networks:
   default:
     driver: bridge

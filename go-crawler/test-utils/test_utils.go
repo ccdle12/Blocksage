@@ -8,7 +8,7 @@ import (
 
 // The following variables are global testing constants
 const (
-	// NodeClient variables
+	// Client variables
 	Username        = "dev123"
 	Password        = "secretpass"
 	NodeAddress     = "123.45.67.8:8332"

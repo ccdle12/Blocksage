@@ -13,4 +13,8 @@ type DBConfig struct {
 
 	// DBType is used to create the driver to a certain DB types
 	DBType string
+
+	// Test is a flag that will be checked in the usecase, this
+	// will determine whether to read/write from the test tables.
+	Test bool
 }

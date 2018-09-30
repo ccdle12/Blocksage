@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	defaultHTTPClient = &http.Client{Timeout: time.Duration(5 * time.Second)}
+	defaultHTTPClient = &http.Client{Timeout: time.Duration(20 * time.Second)}
 )
 
 // NodeRequest will create a NodeRequest, needed to communicate client details from the
@@ -80,7 +80,7 @@ func PostgresPort() string {
 }
 
 // splitDBDomain will split the DB into to items into a []string{domain, host}.
-// The reasoning behind splittin the environment variable is when deployed using k8's,
+// The reasoning behind splitting the environment variable is when deployed using k8's,
 // we are going to use DNS to link each service. The DNS route the end points as <host:domain>.
 func splitDBDomain() []string {
 	address := os.Getenv("POSTGRES_DB_DOMAIN")

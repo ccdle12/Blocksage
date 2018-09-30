@@ -1,6 +1,6 @@
 // +build unit
 
-package controllers
+package dbclient
 
 import (
 	"github.com/ccdle12/Blocksage/go-crawler/test-utils"
@@ -27,13 +27,12 @@ func TestSuiteUnitDBClient(t *testing.T) {
 // ===========================================================
 // TestInitDBClient will test that a DBClient can be initialized.
 func (suite *DBClientSuite) TestInit() {
-	dbClient, err := NewDBClient(
+	dbClient, err := New(
 		DBPort(testutils.DBPort),
 		DBName(testutils.DBName),
 		DBUser(testutils.DBUser),
 		DBHost(testutils.DBHost),
 		DBPassword(testutils.DBPassword),
-		DBType(testutils.DBType),
 		PostgresClient())
 
 	suite.NoError(err, "There should be no error")
@@ -43,13 +42,12 @@ func (suite *DBClientSuite) TestInit() {
 // TestConfigInit will test that the cfg DBConfig struct was initialized by the
 // constructor.
 func (suite *DBClientSuite) TestConfigInit() {
-	dbClient, err := NewDBClient(
+	dbClient, err := New(
 		DBPort(testutils.DBPort),
 		DBName(testutils.DBName),
 		DBUser(testutils.DBUser),
 		DBHost(testutils.DBHost),
 		DBPassword(testutils.DBPassword),
-		DBType(testutils.DBType),
 		PostgresClient())
 
 	suite.NoError(err, "There should be no error")
@@ -60,13 +58,12 @@ func (suite *DBClientSuite) TestConfigInit() {
 // TestEmptyStringInit will test that we are passing an empty string as one of the parameters for
 // initializing a DBClient.
 func (suite *DBClientSuite) TestEmptyStringInit() {
-	dbClient, err := NewDBClient(
+	dbClient, err := New(
 		DBPort(testutils.DBPort),
 		DBName(testutils.DBName),
 		DBUser(testutils.DBUser),
 		DBHost(""),
 		DBPassword(testutils.DBPassword),
-		DBType(testutils.DBType),
 		PostgresClient())
 
 	suite.Error(err, "Error should be returned")
@@ -76,14 +73,14 @@ func (suite *DBClientSuite) TestEmptyStringInit() {
 
 // TestUseCaseInit will test that the DB usecase was initialized.
 func (suite *DBClientSuite) TestUseCaseInit() {
-	dbClient, err := NewDBClient(
+	dbClient, err := New(
 		DBPassword(testutils.DBPassword),
-		DBType(testutils.DBType),
 		DBPort(testutils.DBPort),
 		DBName(testutils.DBName),
 		DBUser(testutils.DBUser),
 		DBHost(testutils.DBHost),
-		TestPostgresClient())
+		PostgresClient(),
+		Test())
 
 	suite.NoError(err, "No error should be returned")
 	suite.NotNil(dbClient.usecase, "usecase is not nil and initialized")

@@ -1,6 +1,6 @@
 // +build unit
 
-package controllers
+package nodeclient
 
 import (
 	"github.com/ccdle12/Blocksage/go-crawler/injector"
@@ -28,19 +28,19 @@ func TestSuiteUnitNodeClient(t *testing.T) {
 // TestInitializingNodeClient will test that the Node Client class will be
 // initialized correctly.
 func (suite *NodeClientSuite) TestInitNodeClient() {
-	nodeClient := NewNodeClient(injector.DefaultHTTPClient(), testutils.NodeAddress, testutils.Username, testutils.Password)
+	nodeClient := New(injector.DefaultHTTPClient(), testutils.NodeAddress, testutils.Username, testutils.Password)
 
 	// nodeClient should be initialized
-	suite.NotNil(nodeClient, "Should be able to initialize NodeClient.")
+	suite.NotNil(nodeClient, "Should be able to initialize Client.")
 }
 
 // TestGetBlock will call GetBlock() and return a Block Struct. The test will be using a mock test server.
 func (suite *NodeClientSuite) TestMockSendNodeRequest() {
-	// Create Test Server and pass it to NewNodeClient()
+	// Create Test Server and pass it to New()
 	server := testutils.TestServer(testutils.NodeResCorrectBlockNoTx0)
 	defer server.Close()
 
-	nodeClient := NewNodeClient(server.Client(), server.URL, testutils.Username, testutils.Password)
+	nodeClient := New(server.Client(), server.URL, testutils.Username, testutils.Password)
 	suite.EqualValues(server.URL, nodeClient.address)
 
 	block, err := nodeClient.GetBlock("0000000000000000001ca03d9e1dd30d2cf49e44ba1569c8819e56cef88b67d4")
@@ -53,11 +53,11 @@ func (suite *NodeClientSuite) TestMockSendNodeRequest() {
 
 // TestSendRequestToMalformedServer will attempt to send a request to a server that is offline or not online at all.
 func (suite *NodeClientSuite) TestSendRequestToMalformedServer() {
-	// Create Test Server and pass it to NewNodeClient()
+	// Create Test Server and pass it to New()
 	server := testutils.TestServer(testutils.NodeResCorrectBlockNoTx0)
 	defer server.Close()
 
-	nodeClient := NewNodeClient(server.Client(), "http://localhost:3421", testutils.Username, testutils.Password)
+	nodeClient := New(server.Client(), "http://localhost:3421", testutils.Username, testutils.Password)
 	_, err := nodeClient.GetBlock("0000000000000000001ca03d9e1dd30d2cf49e44ba1569c8819e56cef88b67d4")
 
 	suite.Error(err, "There should be an error")

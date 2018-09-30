@@ -1,25 +1,25 @@
-package controllers
+package dbclient
 
 import (
 	"errors"
+	"github.com/ccdle12/Blocksage/go-crawler/db-client-uc"
 	"github.com/ccdle12/Blocksage/go-crawler/models"
-	"github.com/ccdle12/Blocksage/go-crawler/usecases"
 	"github.com/ccdle12/Blocksage/go-crawler/utils"
 )
 
 // Options is used in "functional options" pattern, essentially a Builder Pattern.
-// It allows the NewDBClient constructor arguments to be passed in any order.
+// It allows the Client constructor arguments to be passed in any order and optionally.
 type Options struct {
-	dbClient *DBClient
+	dbClient *Client
 }
 
 // Option is a type of function that is used to pass arguments to the constructor.
 type Option func(*Options)
 
-// DBClient is a struct that manages a connection to the DB and provides functions to read/write to the DB.
-type DBClient struct {
+// Client is a struct that manages a connection to the DB and provides functions to read/write to the DB.
+type Client struct {
 	cfg     *models.DBConfig
-	usecase usecases.DBClient
+	usecase dbuc.Usecase
 }
 
 // DBHost is functional paramater to initialize DBHost in config.
@@ -57,41 +57,34 @@ func DBName(name string) Option {
 	}
 }
 
-// DBType is functional paramater to initialize DBType in config.
-func DBType(dbType string) Option {
-	return func(args *Options) {
-		args.dbClient.cfg.DBType = dbType
-	}
-}
-
 // PostgresClient is a functional paramater to initialize the Postgres Client usecase in config.
 func PostgresClient() Option {
 	return func(args *Options) {
-		args.dbClient.usecase = usecases.NewPostGresClient(args.dbClient.cfg)
+		args.dbClient.usecase = dbuc.NewPostGresClient(args.dbClient.cfg)
+		args.dbClient.cfg.DBType = "postgres"
 	}
 }
 
-// TestPostgresClient is a functional parameter to initialize the Test Postgres Client usecase in config.
-// The TestPostgresClient will write data to test tables
-func TestPostgresClient() Option {
+// Test is a functional parameter to use the client in test mode, meaning all data will be written to the
+// test tables.
+func Test() Option {
 	return func(args *Options) {
-		args.dbClient.usecase = usecases.TestNewPostGresClient(args.dbClient.cfg)
+		args.dbClient.cfg.Test = true
 	}
 }
 
-// NewDBClient will return an instance of the DBClient that will read/write from different
-// usecases.
-func NewDBClient(setters ...Option) (*DBClient, error) {
-	// Init args which is Options and inits a DBClient.
+// New will return an instance of the Client that can read/write using different
+// db usecases.
+func New(setters ...Option) (*Client, error) {
+	// Init args variable as an Options struct. This struct will hold a dbClient (concrete implementation).
 	args := &Options{
-		dbClient: &DBClient{
+		dbClient: &Client{
 			cfg: &models.DBConfig{},
 		},
 	}
 
-	// Loop over each argument (optional function) passed to the constructor and pass the args
-	// struct to each argument (optional function). This will init each variable in the DBClients
-	// config.
+	// Loop over each option (setters) passed to the constructor and pass the args
+	// struct to each optional function. This will init each variable in the dbClient config.
 	for _, setter := range setters {
 		setter(args)
 	}
@@ -102,14 +95,11 @@ func NewDBClient(setters ...Option) (*DBClient, error) {
 		return nil, utils.ErrPassingEmptyString
 	}
 
-	// Init the usecase for the dbClient.
-	// args.dbClient.usecase = usecases.NewPostGresClient(args.dbClient.cfg)
-
 	return args.dbClient, nil
 }
 
 // Connect will request the usecase to open a connection to the DB.
-func (d *DBClient) Connect() error {
+func (d *Client) Connect() error {
 	if err := d.usecase.OpenConnection(); err != nil {
 		return err
 	}
@@ -118,7 +108,7 @@ func (d *DBClient) Connect() error {
 }
 
 // Close will request the usecase to close the connection to the DB.
-func (d *DBClient) Close() error {
+func (d *Client) Close() error {
 	if err := d.usecase.CloseConnection(); err != nil {
 		return err
 	}
@@ -127,13 +117,25 @@ func (d *DBClient) Close() error {
 }
 
 // WriteBlock will request the usecase to write a block to the DB.
-func (d *DBClient) WriteBlock(block *models.Block) error {
-	// TODO (ccdle12): move the error to utils
+func (d *Client) WriteBlock(block *models.Block) error {
 	if block == nil {
 		return errors.New("Block is nil")
 	}
 
 	if err := d.usecase.InsertBlock(block); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// WriteTransaction will request the usecase to write a transaction to the DB.
+func (d *Client) WriteTransaction(tx *models.Transaction) error {
+	if tx == nil {
+		return errors.New("Block is nil")
+	}
+
+	if err := d.usecase.InsertTransaction(tx); err != nil {
 		return err
 	}
 

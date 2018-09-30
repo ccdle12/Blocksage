@@ -1,10 +1,10 @@
-package usecases
+package nodeuc
 
 import (
 	"github.com/ccdle12/Blocksage/go-crawler/models"
 )
 
-// NodeClient is the interface for the DBClient Usecase.
-type NodeClient interface {
+// Usecase is the interface for the detailed implementation of the Node.
+type Usecase interface {
 	SendNodeRequest(*models.NodeRequest) (*models.NodeResponse, error)
 }

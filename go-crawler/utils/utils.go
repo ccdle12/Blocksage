@@ -43,6 +43,21 @@ func ConvNodeResToBlock(nodeRes *models.NodeResponse) (*models.Block, error) {
 	return block, nil
 }
 
+// ConvNodeResToTransaction is a function that will convert a NodeResponse to a Transaction.
+func ConvNodeResToTransaction(nodeRes *models.NodeResponse) (*models.Transaction, error) {
+	out, err := json.Marshal(nodeRes.Result)
+	if err != nil {
+		return nil, err
+	}
+
+	var tx *models.Transaction
+	if err := json.Unmarshal(out, &tx); err != nil {
+		return nil, err
+	}
+
+	return tx, nil
+}
+
 // EmptyString will return a bool if a string is empty (zero value)
 func EmptyString(input ...string) bool {
 

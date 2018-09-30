@@ -1,6 +1,6 @@
 // +build integration
 
-package controllers
+package dbclient
 
 import (
 	"github.com/ccdle12/Blocksage/go-crawler/injector"
@@ -14,8 +14,8 @@ import (
 // ===========================================================
 type DBClientIntegrationSuite struct {
 	suite.Suite
-	dbClient     *DBClient
-	testDBClient *DBClient
+	dbClient     Controller
+	testDBClient Controller
 }
 
 // This gets run automatically by `go test` so we call `suite.Run` inside it
@@ -26,13 +26,12 @@ func TestSuiteIntegrationDBClient(t *testing.T) {
 
 func (suite *DBClientIntegrationSuite) SetupTest() {
 	// DBClient
-	dbClient, err := NewDBClient(
+	dbClient, err := New(
 		DBPort(injector.PostgresPort()),
 		DBName(injector.PostgresDBName()),
 		DBUser(injector.PostgresUserName()),
 		DBHost(injector.PostgresDomain()),
 		DBPassword(injector.PostgresPassword()),
-		DBType("postgres"),
 		PostgresClient())
 
 	suite.NoError(err, "There should be no error")
@@ -41,14 +40,14 @@ func (suite *DBClientIntegrationSuite) SetupTest() {
 	suite.dbClient = dbClient
 
 	// TestDBClient
-	testDBClient, err := NewDBClient(
+	testDBClient, err := New(
 		DBPort(injector.PostgresPort()),
 		DBName(injector.PostgresDBName()),
 		DBUser(injector.PostgresUserName()),
 		DBHost(injector.PostgresDomain()),
 		DBPassword(injector.PostgresPassword()),
-		DBType("postgres"),
-		TestPostgresClient())
+		PostgresClient(),
+		Test())
 
 	suite.NoError(err, "There should be no error")
 	suite.NotNil(testDBClient, "DBClient is not nil when attempting to initialize")
@@ -75,13 +74,34 @@ func (suite *DBClientIntegrationSuite) TestConnectTestDBClient() {
 	suite.NoError(err, "There should be no error when connecting to the Test DB.")
 }
 
-// TestWriteBlockToTestDB will test that client can write to the DB.
-func (suite *DBClientIntegrationSuite) TestWriteBlockToTestDB() {
+// TestDBClientWriteBlock will test that we write a block to the DB.
+func (suite *DBClientIntegrationSuite) TestDBClientWriteBlock() {
+	// Connect to the DB.
 	err := suite.testDBClient.Connect()
 	defer suite.testDBClient.Close()
 
-	suite.NoError(err, "There should be no error when connecting to the Test DB.")
+	suite.NoError(err, "There should be no error opening a connection")
 
-	err = suite.testDBClient.WriteBlock(testutils.Block538770)
-	suite.NoError(err, "There should be no error when writing the block to the DB.")
+	// Write Block to DB.
+	block := testutils.Block538770
+	err = suite.testDBClient.WriteBlock(block)
+	suite.NoError(err, "There should be no error writing a block")
+}
+
+// TestPostGresClientWriteTx will test that we write a TX to the DB.
+func (suite *DBClientIntegrationSuite) TestPostGresClientWriteTx() {
+	err := suite.testDBClient.Connect()
+	defer suite.testDBClient.Close()
+
+	// Use Block538770 as the block to reference this tx
+	block := testutils.Block538770
+
+	// Retrieve same tx and add the blockhash of Block538770
+	tx := testutils.SampleTX
+	tx.Blockhash = block.Hash
+
+	// Write the tx to the db
+	err = suite.testDBClient.WriteTransaction(tx)
+	suite.NoError(err, "There should be no error writing tx")
+
 }

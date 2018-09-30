@@ -3,9 +3,9 @@
 package main
 
 import (
-	"github.com/ccdle12/Blocksage/go-crawler/controllers"
 	"github.com/ccdle12/Blocksage/go-crawler/injector"
 	"github.com/ccdle12/Blocksage/go-crawler/models"
+	"github.com/ccdle12/Blocksage/go-crawler/node-client"
 	"github.com/ccdle12/Blocksage/go-crawler/test-utils"
 	"github.com/stretchr/testify/suite"
 	"testing"
@@ -17,8 +17,8 @@ import (
 type MainUnitSuite struct {
 	suite.Suite
 	block                *models.Block
-	nodeClient           *controllers.NodeClient
-	nodeClientController controllers.NodeClientController
+	nodeClient           *nodeclient.Client
+	nodeClientController nodeclient.Controller
 }
 
 // This gets run automatically by `go test` so we call `suite.Run` inside it
@@ -30,8 +30,8 @@ func TestSuiteMainUnitSuite(t *testing.T) {
 // Testing Lifecycle Hooks
 func (suite *MainUnitSuite) SetupTest() {
 	suite.block = &models.Block{}
-	suite.nodeClient = controllers.NewNodeClient(injector.DefaultHTTPClient(), testutils.NodeAddress, testutils.Username, testutils.Password)
-	suite.nodeClientController = controllers.NewNodeClient(injector.DefaultHTTPClient(), testutils.NodeAddress, testutils.Username, testutils.Password)
+	suite.nodeClient = nodeclient.New(injector.DefaultHTTPClient(), testutils.NodeAddress, testutils.Username, testutils.Password)
+	suite.nodeClientController = nodeclient.New(injector.DefaultHTTPClient(), testutils.NodeAddress, testutils.Username, testutils.Password)
 }
 
 // ===========================================================
@@ -46,13 +46,13 @@ func (suite *MainUnitSuite) TestModelPackageExists() {
 }
 
 // TestControllersPackageExists will import the controllers package and create
-// a NodeClient object. If the NodeClient object is initialized to all the zero
+// a Client object. If the Client object is initialized to all the zero
 // values, then we are able to import the controllers package.
 func (suite *MainUnitSuite) TestControllersPackageExists() {
 	suite.NotNil(suite.nodeClient, "Node Client should have been initialized using the controllers package import")
 }
 
-// TestReferenceByInterface will test whether NodeClient can be created and referenced
+// TestReferenceByInterface will test whether Client can be created and referenced
 // using the interface.
 func (suite *MainUnitSuite) TestReferenceByInterface() {
 	suite.NotNil(suite.nodeClientController, "nodeClient was initialized and referenced using the interface")

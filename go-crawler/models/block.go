@@ -12,7 +12,6 @@ type Block struct {
 	VersionHex        string   `json:"versionHex"`
 	MerkleRoot        string   `json:"merkleroot"`
 	TX                []string `json:"tx"`
-	FKeyTX            string   `json:"fktx"`
 	Time              int      `json:"time"`
 	MedianTime        int      `json:"mediantime"`
 	Nonce             int      `json:"nonce"`

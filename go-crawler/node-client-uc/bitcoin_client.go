@@ -1,4 +1,4 @@
-package usecases
+package nodeuc
 
 import (
 	"bytes"
@@ -19,7 +19,7 @@ func NewBitcoinClient() *BitcoinClient {
 
 // SendNodeRequest will run all un-exported functions needed to send a request to the
 // Blockchain Node.
-func (b BitcoinClient) SendNodeRequest(nodeReq *models.NodeRequest) (*models.NodeResponse, error) {
+func (b *BitcoinClient) SendNodeRequest(nodeReq *models.NodeRequest) (*models.NodeResponse, error) {
 	req, err := b.createRequest(nodeReq)
 	if err != nil {
 		return nil, err
@@ -49,7 +49,7 @@ func (b BitcoinClient) SendNodeRequest(nodeReq *models.NodeRequest) (*models.Nod
 }
 
 // createRequest builds an *http.Request object to send the Blockchain Node.
-func (b BitcoinClient) createRequest(nodeReq *models.NodeRequest) (*http.Request, error) {
+func (b *BitcoinClient) createRequest(nodeReq *models.NodeRequest) (*http.Request, error) {
 	body, err := b.createBody(nodeReq.Body)
 	if err != nil {
 		return nil, err
@@ -67,7 +67,7 @@ func (b BitcoinClient) createRequest(nodeReq *models.NodeRequest) (*http.Request
 }
 
 // createBody marshals the *models.NodeReqBody to JSON format.
-func (b BitcoinClient) createBody(body models.NodeReqBody) (*bytes.Buffer, error) {
+func (b *BitcoinClient) createBody(body models.NodeReqBody) (*bytes.Buffer, error) {
 	bodyJSON, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func (b BitcoinClient) createBody(body models.NodeReqBody) (*bytes.Buffer, error
 }
 
 // sendRequest, sends the http request to the Blockchain Node.
-func (b BitcoinClient) sendRequest(nodeReq *models.NodeRequest, req *http.Request) (*http.Response, error) {
+func (b *BitcoinClient) sendRequest(nodeReq *models.NodeRequest, req *http.Request) (*http.Response, error) {
 	res, err := nodeReq.Client.Do(req)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (b BitcoinClient) sendRequest(nodeReq *models.NodeRequest, req *http.Reques
 
 // handleNodeResponse will check the NodeResponse for an error. If there Error.Code is not 0, then there was
 // an error. We return the error message from the NodeResponse.
-func (b BitcoinClient) handleNodeResponse(nodeRes *models.NodeResponse) error {
+func (b *BitcoinClient) handleNodeResponse(nodeRes *models.NodeResponse) error {
 	if nodeRes.Error.Code != 0 {
 		return errors.New(nodeRes.Error.Message)
 	}

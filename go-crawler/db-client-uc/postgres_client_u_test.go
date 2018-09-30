@@ -1,6 +1,6 @@
 // +build unit
 
-package usecases
+package dbuc
 
 import (
 	"github.com/ccdle12/Blocksage/go-crawler/test-utils"

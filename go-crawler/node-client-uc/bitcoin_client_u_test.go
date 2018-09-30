@@ -1,6 +1,6 @@
 // +build unit
 
-package usecases
+package nodeuc
 
 import (
 	"github.com/ccdle12/Blocksage/go-crawler/injector"
@@ -16,7 +16,7 @@ import (
 type BitcoinClientSuite struct {
 	suite.Suite
 	bitcoinClient *BitcoinClient
-	nodeClient    NodeClient
+	nodeClient    Usecase
 }
 
 // This gets run automatically by `go test` so we call `suite.Run` inside it
