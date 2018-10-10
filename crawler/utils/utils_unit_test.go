@@ -92,3 +92,23 @@ func (suite *UtilsUnitSuite) TestAddressFormat() {
 		suite.Equal(t.expected, result)
 	}
 }
+
+// TestConvStrSliceToTextArr will test that we can convert a slice of strings to text arrray format
+// that can be written to a SQL db as a text[].
+func (suite *UtilsUnitSuite) TestConvStrSliceToTextArr() {
+	// Create struct slice of tests.
+	tests := []struct {
+		input    []string
+		expected string
+	}{
+		{[]string{"12345", "678910"}, "{12345, 678910}"},
+		{[]string{"12345", "678910", "1112131415", "1617181920", "12"}, "{12345, 678910, 1112131415, 1617181920, 12}"},
+		{nil, "{}"},
+	}
+
+	// Loop over each test case.
+	for _, t := range tests {
+		result := ConvStrSliceToTextArr(t.input)
+		suite.Equal(t.expected, result)
+	}
+}
