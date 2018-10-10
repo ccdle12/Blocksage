@@ -23,6 +23,7 @@ CREATE TABLE "blocks" (
     PRIMARY KEY("hash")
 );
 
+-- TODO (ccdle12): create inputs and outputs table
 DROP TABLE IF EXISTS "transactions";
 
 CREATE TABLE "transactions" (
@@ -35,9 +36,6 @@ CREATE TABLE "transactions" (
 	locktime bigint NOT NULL,
     PRIMARY KEY("hash"),
     FOREIGN KEY ("blockhash") REFERENCES blocks ("hash")         
-	-- Vin      []TransactionInput
-	-- Vout     []TransactionOutput
-    -- TODO(ccdle12): Add foreign key for tx here as ('foreignkeytx')
 );
 
 
@@ -67,16 +65,13 @@ DROP TABLE IF EXISTS "testtransactions";
 CREATE TABLE "testtransactions" (
     blockhash text NOT NULL, 
     txid     text UNIQUE NOT NULL,
-	hash     text UNIQUE NOT NULL,
+	hash     text NOT NULL,
 	version  int NOT NULL,          
 	size     int NOT NULL,                
 	vsize    int NOT NULL,       
 	locktime bigint NOT NULL,
     PRIMARY KEY("hash"),
     FOREIGN KEY ("blockhash") REFERENCES testblocks ("hash")            
-	-- Vin      []TransactionInput
-	-- Vout     []TransactionOutput
-    -- TODO(ccdle12): Add foreign key for tx here as ('foreignkeytx')
 );
 
 DROP TABLE IF EXISTS "testinputs";
@@ -88,13 +83,13 @@ CREATE TABLE "testinputs" (
 	asm text NOT NULL,
 	hex text NOT NULL,
     sequence bigint NOT NULL,
-    PRIMARY KEY("txhash"),
     FOREIGN KEY("txhash") REFERENCES testtransactions ("hash")
 );
 
 DROP TABLE IF EXISTS "testoutputs";
 
 CREATE TABLE "testoutputs" (
+    txhash text NOT NULL,
     value double precision,
 	n integer,
     asm text NOT NULL,
@@ -102,6 +97,5 @@ CREATE TABLE "testoutputs" (
     reqsigs integer,
     type text,
     addresses text[],
-    PRIMARY KEY("type"),
-    FOREIGN KEY("type") REFERENCES testtransactions ("hash")
+    FOREIGN KEY("txhash") REFERENCES testtransactions ("hash")
 );
