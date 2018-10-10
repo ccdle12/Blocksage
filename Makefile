@@ -43,4 +43,4 @@ itest-crawler:
 clean:
 	@echo "[Cleaning up project...]"
 	@docker-compose down --volumes --remove-orphans
-	@cd go-crawler && rm -rf tmp | true
+	@cd crawler && rm -rf tmp | true
