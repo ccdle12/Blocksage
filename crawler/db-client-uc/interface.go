@@ -11,4 +11,5 @@ type Usecase interface {
 	InsertBlock(b *models.Block) error
 	InsertTransaction(t *models.Transaction) error
 	InsertInput(txHash string, in models.TransactionInput) error
+	InsertOutput(txHash string, out models.TransactionOutput) error
 }
