@@ -124,7 +124,7 @@ func (suite *MainIntegrationSuite) TestWriteBlock() {
 	block := testutils.Block506664
 	// txs := block.TX
 
-	// Write the Block to the db
+	// Write the Block to the db.
 	err = testDBClient.WriteBlock(block)
 	suite.NoError(err, "Should be able to write block to the db")
 }
@@ -165,19 +165,19 @@ func (suite *MainIntegrationSuite) TestWriteMultipleTXs() {
 
 	// Write 10 transactions to the DB.
 	for i, hash := range txs {
-		// Break early this block has +1000 plus txs
+		// Break early, this block has +1000 plus txs.
 		if i == 10 {
 			break
 		}
 
-		// Request GetTransaction from the node
+		// Request GetTransaction from the node.
 		tx, err := nodeClient.GetTransaction(hash)
 		suite.NoError(err, "There should be no error when connecting to the Test DB.")
 
-		// Add blockhash to transaction
+		// Add blockhash to transaction.
 		tx.Blockhash = block.Hash
 
-		// Write the retrieved transaction to the transaction table
+		// Write the retrieved transaction to the transaction table.
 		err = testDBClient.WriteTransaction(tx)
 		suite.NoError(err, "There should be no error writing transaction")
 	}
