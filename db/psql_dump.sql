@@ -46,7 +46,7 @@ CREATE TABLE "inputs" (
 	asm text NOT NULL,
 	hex text NOT NULL,
     sequence bigint NOT NULL,
-    FOREIGN KEY("txhash") REFERENCES testtransactions ("hash")
+    FOREIGN KEY("txhash") REFERENCES transactions ("hash")
 );
 
 DROP TABLE IF EXISTS "outputs";
@@ -60,7 +60,7 @@ CREATE TABLE "outputs" (
     reqsigs integer,
     type text,
     addresses text[],
-    FOREIGN KEY("txhash") REFERENCES testtransactions ("hash")
+    FOREIGN KEY("txhash") REFERENCES transactions ("hash")
 );
 
 
