@@ -1,36 +1,46 @@
-GOCMD=go
-GOTEST=$(GOCMD) test
+.PHONY: env-up build adminer check clean
 
-DC=docker-compose
-DE=docker exec -i -t
-B=/bin/bash -c
-A=api
-BC=bitcoinclient
-DE-API=$(DE) $(A) $(B)
+default: clean build env-up
 
-CDEV=-f docker-compose-dev.yml
+# env-up will launch the project	
+env-up:
+	@echo "[Bringing up environment...]"
+	docker-compose up -d
 
+# build all the images in the docker-compose file
+build:
+	@echo "[Building containers...]"
+	docker-compose -f docker-compose.yml build
 
-# Run Project
-run:
-	$(DC) $(CDEV) up
+# adminer will open adminer on the localhost
+adminer:
+	open http://localhost:8080
 
-run-detach:
-	$(DC) $(CDEV) up -d
+# check will run all tests for each service in the project
+check: test-api test-crawler
 
-# Run all Tests API
-test-api: 
-	make test-api-unit
-	make test-api-integration
+# service specific tests
+test-api: unit-test-api integration-test-crawler
 
-# Unit Tests
-test-api-unit:
-	$(DE-API) "${GOTEST} ./... -tags=unit"
+test-crawler: utest-crawler itest-crawler
 
-# Integration Tests
-test-api-integration:
-	$(DE-API) "${GOTEST} ./... -tags=integration"
+# api tests
+utest-api:
+	@docker exec -it api /bin/bash -c "go test -v ./... -tags=unit"
 
-# Clean
+itest-api:
+	@docker exec -it api /bin/bash -c "go test -v ./... -tags=integration"
+
+# crawler tests
+utest-crawler:
+	@docker exec -it crawler /bin/bash -c "go test -v ./... -tags=unit"
+
+itest-crawler:
+	@echo "[Running crawler integration tests...]"
+	@docker exec -it crawler /bin/bash -c "go test -v ./... -tags=integration"
+
+# clean will tear down the docker network
 clean:
-	$(DC) $(CDEV) down
+	@echo "[Cleaning up project...]"
+	@docker-compose down --volumes --remove-orphans
+	@cd go-crawler && rm -rf tmp | true

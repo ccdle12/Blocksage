@@ -1,0 +1,16 @@
+sduo: required
+
+language: golang
+
+services: 
+  - docker
+
+before_script:
+  # Disable services enabled by default
+  - sudo service mysql stop
+  - sudo service postgresql stop
+  
+script:
+  - make
+  - sleep 5;
+  - make test-crawler

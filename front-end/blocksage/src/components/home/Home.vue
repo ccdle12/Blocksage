@@ -5,7 +5,7 @@
 
     <!-- Search Bar -->
     <form @submit.prevent="submitSearch">
-      <input v-model="searchValue" v-on:keyup.enter.space="submitSearch" type="text" placeholder="Enter transaction hash/block hash">
+      <input v-model="userSearch" v-on:keyup.enter.space="submitSearch" type="text" placeholder="Enter transaction hash/block hash">
     </form>
 
     <button v-on:click="submitSearch"> Search </button>
@@ -24,7 +24,7 @@ export default {
   data: function() {
     return {
       title: 'Blocksage',
-      searchValue: '',
+      userSearch: '',
       invalidSearch: false
     }
   },
@@ -38,9 +38,10 @@ export default {
   // b1fea52486ce0c62bb442b530a3f0132b826c74e473d1f2c220bfa78111c5082
   methods: {
     submitSearch: function() {
-      let searchRequest = searchValidator.validate(this.searchValue)
-      navigationService.navigate(this.$router, searchRequest, this.searchValue)
+      let searchRequest = searchValidator.validate(this.userSearch)
+      navigationService.navigate(this.$router, searchRequest, this.userSearch)
 
+      // Only gets executed if navigation has failed due to invalid search
       this.invalidSearch = true
     },
   },

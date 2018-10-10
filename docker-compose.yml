@@ -1,0 +1,72 @@
+version: '3'
+services:
+  # api:
+    # container_name: 'api'
+    # build: ./go-api
+    # volumes:
+    #   - ./go-api:/go/src/github.com/ccdle12/Blocksage/go-api
+    #   - /go-api/tmp/
+    # ports:
+    #   - 8548:8548
+    # environment:
+    #   - USERNAME=$BTC_MAINNET_USERNAME
+    #   - PASSWORD=$BTC_MAINNET_PASSWORD
+    #   - BTC_MAIN_DOMAIN=$BTC_MAINNET_DOMAIN_EXTERNAL
+    #   - DB_DOMAIN=$DB_SUBNET
+    # networks:
+    #   default:
+    #     ipv4_address: $API_SUBNET
+
+  crawler:
+    container_name: 'crawler'
+    build: ./go-crawler
+    volumes:
+      - ./go-crawler:/go/src/github.com/ccdle12/Blocksage/go-crawler
+      - /go-crawler/tmp/
+    ports:
+      - 9548:9548
+    environment:
+      BTC_USERNAME: $BTC_MAINNET_USERNAME
+      BTC_PASSWORD: $BTC_MAINNET_PASSWORD
+      BTC_MAIN_DOMAIN: $BTC_MAINNET_DOMAIN_EXTERNAL
+      POSTGRES_DB_DOMAIN: db:5432
+      POSTGRES_DB_NAME: $DB_NAME
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
+    networks:
+      - blocksage
+  
+  front-end:
+    container_name: 'front-end'
+    build: ./front-end/blocksage
+    volumes:
+      - ./front-end/blocksage:/app/blocksage
+      - /front-end/blocksage/node_modules/
+    ports:
+      - 3000:3000
+    networks:
+      - blocksage
+
+  db:
+    container_name: 'db'
+    restart: always
+    build: ./db
+    environment:
+      POSTGRES_DB: $DB_NAME
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
+    ports:
+      - 5432:5432
+    networks:
+      - blocksage
+
+  adminer:
+    container_name: 'adminer'
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - blocksage
+
+networks:
+  blocksage:

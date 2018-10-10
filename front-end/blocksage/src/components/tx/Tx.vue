@@ -1,38 +1,38 @@
 <template>
   <div>
     <h1>TX PAGE</h1>
-    {{ retrievedTx }}
+    {{ TX }}
   </div>
 </template>
 
 <script>
-import btcApiService from '../bitcoin-mainnet/BTCAPIService'
+import btcAPIService from '../bitcoin-mainnet/BTCAPIService'
 
 export default {
   data: function() {
     return {
-      retrievedTx: ''
+      TX: ''
     }
   },
 
   created: function() {
-    this.getTx(this.$route.params.txHash)
+    this.requestTX(this.$route.params.txHash)
   },
 
   methods: {
-    getTx: function(txHash) {
-      btcApiService
-        .getTx(txHash)
-        .then(response => this.retrievedTx = response.data)
+    requestTX: function(txHash) {
+      btcAPIService
+        .getTX(txHash)
+        .then(response => this.TX = response.data)
         .catch(error => {
-        if (error.response) {
-          this.retrievedTx = error.response.data
-        } else if (error.request) {
-          console.log('Error reqest: ', error.request);
-          this.retrievedTx = 'Something went wrong, there was no response'
-        } else {
-          return error.message
-        }
+          if (error.response) {
+            this.TX = error.response.data
+          } else if (error.request) {
+            console.log('Error reqest: ', error.request);
+            this.TX = 'Something went wrong, there was no response'
+          } else {
+            return error.message
+          }
       })
     }
   }

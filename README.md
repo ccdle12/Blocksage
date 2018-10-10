@@ -1,5 +1,5 @@
 # Blocksage - Bitcoin Block-Explorer
-[![Build Status](https://semaphoreci.com/api/v1/ccdle12/blocksage/branches/master/badge.svg)](https://semaphoreci.com/ccdle12/blocksage)
+[![Build Status](https://travis-ci.com/ccdle12/Blocksage.svg?branch=master)](https://travis-ci.com/ccdle12/Blocksage)
 
 The project currently consists of:
 * Front-End: VueJS
@@ -14,22 +14,20 @@ The project currently consists of:
 # Setup Project
 Run the Project
 ```
-$ make run
+$ make
 ```
 
 # Run Tests
-## API Test
+## Crawler Tests
+
+* All Tests
+
+``` make test-crawler```
+
 * Unit Tests
-```
-$ make test-api-unittest
-```
+
+``` make utest-crawler```
 
 * Integration Tests
-```
-$ make test-api-integration
-```
 
-* All tests
-```
-$ make test-api-all
-```
+``` make itest-crawler```

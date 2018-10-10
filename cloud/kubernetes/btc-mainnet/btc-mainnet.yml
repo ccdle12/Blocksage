@@ -72,7 +72,7 @@ spec:
           - mountPath: /data
             name: btc-mainnet-pv
         command: ["/bin/sh"]
-        args: ["-c", "bitcoind --datadir=./data"]
+        args: ["-c", "bitcoind --datadir=./data -reindex"]
       volumes:
         - name: btc-mainnet-pv
           gcePersistentDisk:
