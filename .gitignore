@@ -1,5 +1,5 @@
 .vscode
 .env
 cloud/bitcoin-node/docker-entrypoint.sh
-go-api/tmp
-go-crawler/tmp
+api/tmp
+crawler/tmp
