@@ -23,7 +23,6 @@ CREATE TABLE "blocks" (
     PRIMARY KEY("hash")
 );
 
--- TODO (ccdle12): create inputs and outputs table
 DROP TABLE IF EXISTS "transactions";
 
 CREATE TABLE "transactions" (
@@ -36,6 +35,32 @@ CREATE TABLE "transactions" (
 	locktime bigint NOT NULL,
     PRIMARY KEY("hash"),
     FOREIGN KEY ("blockhash") REFERENCES blocks ("hash")         
+);
+
+DROP TABLE IF EXISTS "inputs";
+
+CREATE TABLE "inputs" (
+    txhash text NOT NULL,
+    inputtxid text NOT NULL,
+	vout bigint NOT NULL,
+	asm text NOT NULL,
+	hex text NOT NULL,
+    sequence bigint NOT NULL,
+    FOREIGN KEY("txhash") REFERENCES testtransactions ("hash")
+);
+
+DROP TABLE IF EXISTS "outputs";
+
+CREATE TABLE "outputs" (
+    txhash text NOT NULL,
+    value double precision,
+	n integer,
+    asm text NOT NULL,
+	hex text NOT NULL,
+    reqsigs integer,
+    type text,
+    addresses text[],
+    FOREIGN KEY("txhash") REFERENCES testtransactions ("hash")
 );
 
 
