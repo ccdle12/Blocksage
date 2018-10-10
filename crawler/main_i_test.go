@@ -182,10 +182,16 @@ func (suite *MainIntegrationSuite) TestWriteMultipleTXs() {
 
 		// Loop over each input in the transaction.
 		for _, input := range tx.Vin {
-			fmt.Println("input: ", input.Txid)
 			// Write the transaction inputs to the inputs table.
 			err = testDBClient.WriteInput(tx.Hash, input)
 			suite.NoError(err, "There should be no error writing inputs to the db.")
+		}
+
+		// Loop over each output in the transaction.
+		for _, output := range tx.Vout {
+			// Write the transaction outputs to the outputs table.
+			err = testDBClient.WriteOutput(tx.Hash, output)
+			suite.NoError(err, "There should be no error writing outputs to the db.")
 		}
 	}
 }
