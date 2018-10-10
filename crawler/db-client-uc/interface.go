@@ -10,4 +10,5 @@ type Usecase interface {
 	CloseConnection() error
 	InsertBlock(b *models.Block) error
 	InsertTransaction(t *models.Transaction) error
+	InsertInput(txHash string, in models.TransactionInput) error
 }

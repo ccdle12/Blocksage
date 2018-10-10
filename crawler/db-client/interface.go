@@ -8,6 +8,7 @@ import (
 type Controller interface {
 	WriteBlock(block *models.Block) error
 	WriteTransaction(tx *models.Transaction) error
+	WriteInput(txHash string, in models.TransactionInput) error
 	Connect() error
 	Close() error
 }
