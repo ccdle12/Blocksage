@@ -80,3 +80,32 @@ func FormatAddress(address string) string {
 
 	return "http://" + address
 }
+
+// ConvStrSliceToTextArr will convert a []string to text[]. The structure text[],
+// is an array that is formatted to be written to a SQL array. This will be returned
+// as a flattened string.
+func ConvStrSliceToTextArr(input []string) string {
+	// Create result string.
+	var result string
+	result = "{"
+
+	// Loop over []string and append it to result.
+	for i, item := range input {
+		// Append the item from the []string to the result.
+		result += item
+
+		// Check if iteration is at the end, if it is, then we don't want to append
+		// a comma.
+		if i == len(input)-1 {
+			break
+		}
+
+		// Append a comma separating each item in text[].
+		result += ", "
+	}
+
+	// Append final closing brace.
+	result += "}"
+
+	return result
+}
