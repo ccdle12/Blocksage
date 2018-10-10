@@ -132,8 +132,30 @@ func (p *PostGresClient) InsertInput(txHash string, i models.TransactionInput) e
 		_, err = p.db.Exec("INSERT INTO testinputs (txhash, inputtxid, vout, asm, hex, sequence) VALUES ($1, $2, $3, $4, $5, $6)",
 			txHash, i.Txid, i.Vout, i.ScriptSig.Asm, i.ScriptSig.Hex, i.Sequence)
 	} else {
-		_, err = p.db.Exec("INSERT INTO inputs (inputtxid, vout, asm, hex, sequence) VALUES ($1, $2, $3, $4, $5, $6)",
-			i.Txid, i.Vout, i.ScriptSig.Asm, i.ScriptSig.Hex, i.Sequence)
+		_, err = p.db.Exec("INSERT INTO inputs (txhash, inputtxid, vout, asm, hex, sequence) VALUES ($1, $2, $3, $4, $5, $6)",
+			txHash, i.Txid, i.Vout, i.ScriptSig.Asm, i.ScriptSig.Hex, i.Sequence)
+	}
+	if err != nil {
+		return utils.FailedToInsertToDB(err)
+	}
+
+	return nil
+}
+
+// InsertOutput will write a transaction output to the DB.
+func (p *PostGresClient) InsertOutput(txHash string, o models.TransactionOutput) error {
+
+	// Convert addresses []string to text[], this will format the array to be written to the DB.
+	textArr := utils.ConvStrSliceToTextArr(o.ScriptPubKey.Addresses)
+
+	// TODO: (ccdle12) having trouble using Sprintf to create queries, need to make this more elegant.
+	var err error
+	if p.cfg.Test {
+		_, err = p.db.Exec("INSERT INTO testoutputs (txhash, value, n, asm, hex, reqsigs, type, addresses) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+			txHash, o.Value, o.N, o.ScriptPubKey.Asm, o.ScriptPubKey.Hex, o.ScriptPubKey.ReqSigs, o.ScriptPubKey.Type, textArr)
+	} else {
+		_, err = p.db.Exec("INSERT INTO outputs (txhash, value, n, asm, hex, reqsigs, type, addresses) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+			txHash, o.Value, o.N, o.ScriptPubKey.Asm, o.ScriptPubKey.Hex, o.ScriptPubKey.ReqSigs, o.ScriptPubKey.Type, textArr)
 	}
 	if err != nil {
 		return utils.FailedToInsertToDB(err)

@@ -150,3 +150,12 @@ func (d *Client) WriteInput(txHash string, in models.TransactionInput) error {
 
 	return nil
 }
+
+// WriteOutput will request the usecase to write a transaction output to the DB.
+func (d *Client) WriteOutput(txHash string, out models.TransactionOutput) error {
+	if err := d.usecase.InsertOutput(txHash, out); err != nil {
+		return err
+	}
+
+	return nil
+}
