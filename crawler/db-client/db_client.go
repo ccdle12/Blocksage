@@ -141,3 +141,12 @@ func (d *Client) WriteTransaction(tx *models.Transaction) error {
 
 	return nil
 }
+
+// TODO (ccdle12)
+func (d *Client) WriteInput(txHash string, in models.TransactionInput) error {
+	if err := d.usecase.InsertInput(txHash, in); err != nil {
+		return err
+	}
+
+	return nil
+}

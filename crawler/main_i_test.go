@@ -3,7 +3,7 @@
 package main
 
 import (
-	// "fmt"
+	"fmt"
 	"github.com/ccdle12/Blocksage/crawler/db-client"
 	"github.com/ccdle12/Blocksage/crawler/injector"
 	"github.com/ccdle12/Blocksage/crawler/node-client"
@@ -180,5 +180,13 @@ func (suite *MainIntegrationSuite) TestWriteMultipleTXs() {
 		// Write the retrieved transaction to the transaction table.
 		err = testDBClient.WriteTransaction(tx)
 		suite.NoError(err, "There should be no error writing transaction")
+
+		// Loop over each input in the transaction.
+		for _, input := range tx.Vin {
+			fmt.Println("input: ", input.Txid)
+			// Write the transaction inputs to the inputs table.
+			err = testDBClient.WriteInput(tx.Hash, input)
+			suite.NoError(err, "There should be no error writing inputs to the db.")
+		}
 	}
 }
