@@ -142,7 +142,7 @@ func (d *Client) WriteTransaction(tx *models.Transaction) error {
 	return nil
 }
 
-// TODO (ccdle12)
+// WriteInput will request the usecase to write a transaction input to the DB.
 func (d *Client) WriteInput(txHash string, in models.TransactionInput) error {
 	if err := d.usecase.InsertInput(txHash, in); err != nil {
 		return err

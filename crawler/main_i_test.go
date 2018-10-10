@@ -3,7 +3,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/ccdle12/Blocksage/crawler/db-client"
 	"github.com/ccdle12/Blocksage/crawler/injector"
 	"github.com/ccdle12/Blocksage/crawler/node-client"
