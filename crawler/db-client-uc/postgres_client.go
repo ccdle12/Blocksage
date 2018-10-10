@@ -124,8 +124,7 @@ func (p *PostGresClient) InsertTransaction(t *models.Transaction) error {
 	return nil
 }
 
-// TODO: (ccdle12)
-// InsertInput will write an input of a transaction to the DB.
+// InsertInput will write a transaction input to the DB.
 func (p *PostGresClient) InsertInput(txHash string, i models.TransactionInput) error {
 	// TODO: (ccdle12) having trouble using Sprintf to create queries, need to make this more elegant
 	var err error
