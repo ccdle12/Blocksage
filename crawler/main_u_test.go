@@ -3,6 +3,8 @@
 package main
 
 import (
+	"github.com/ccdle12/Blocksage/crawler/db-client"
+	"github.com/ccdle12/Blocksage/crawler/indexer"
 	"github.com/ccdle12/Blocksage/crawler/injector"
 	"github.com/ccdle12/Blocksage/crawler/models"
 	"github.com/ccdle12/Blocksage/crawler/node-client"
@@ -56,4 +58,31 @@ func (suite *MainUnitSuite) TestControllersPackageExists() {
 // using the interface.
 func (suite *MainUnitSuite) TestReferenceByInterface() {
 	suite.NotNil(suite.nodeClientController, "nodeClient was initialized and referenced using the interface")
+}
+
+// TestInitIndexer will test that the Crawler can be initalised from main.
+func (suite *MainUnitSuite) TestInitIndexer() {
+	// Create a node Controller to communicate with a Blockchain Node.
+	var nodeClient nodeclient.Controller
+	nodeClient = nodeclient.New(
+		injector.DefaultHTTPClient(),
+		injector.BTCDomain(),
+		injector.BTCUsername(),
+		injector.BTCPassword())
+
+	// Create a controller to write to the DB using the test tables.
+	var testDBClient dbclient.Controller
+	testDBClient, err := dbclient.New(
+		dbclient.DBPort(injector.PostgresPort()),
+		dbclient.DBName(injector.PostgresDBName()),
+		dbclient.DBUser(injector.PostgresUserName()),
+		dbclient.DBHost(injector.PostgresDomain()),
+		dbclient.DBPassword(injector.PostgresPassword()),
+		dbclient.PostgresClient(),
+		dbclient.Test())
+	suite.NoError(err, "There should be no error when create a db client.")
+
+	// Create an Indexer.
+	indexer := indexer.New(nodeClient, testDBClient)
+	suite.NotNil(indexer, "Indexer should be initialised and not nil")
 }
