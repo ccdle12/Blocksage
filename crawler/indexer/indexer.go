@@ -23,7 +23,7 @@ func New(node nodeclient.Controller, db dbclient.Controller) *Indexer {
 }
 
 // GetBlock calls the Node Client to retrieve a Block according to a blockhash.
-func (i *Indexer) GetBlock(hash string) (*models.Block, error) {
+func (i *Indexer) getBlock(hash string) (*models.Block, error) {
 	// Get a block.
 	block, err := i.node.GetBlock(hash)
 	if err != nil {
@@ -33,9 +33,9 @@ func (i *Indexer) GetBlock(hash string) (*models.Block, error) {
 	return block, nil
 }
 
-// Write will receive a Block and write all subsequent information from the block
+// write will receive a Block and write all subsequent information from the block
 // to the db, including transactions, inputs and outputs.
-func (i *Indexer) Write(block *models.Block) error {
+func (i *Indexer) write(block *models.Block) error {
 	// Write the received block to the db.
 	if err := i.db.WriteBlock(block); err != nil {
 		return err
