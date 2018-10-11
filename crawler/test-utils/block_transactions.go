@@ -1,6 +1,27 @@
 package testutils
 
 var (
+	// ReducedTXBlock538770 are a subset of transactions from Block 538770.
+	// This reason for this is to test while reducing the time for integration
+	// tests.
+	ReducedTXBlock538770 = []string{
+		"b35a13c56abcd6d84db0d776fcfd2e08cb8edfab1c182995f5c5bce449822760",
+		"2093a0f8504d07c1f5fcfd034ee445fd61748a0ee1c3b30cac478c2b0ecdf6f2",
+		"130c09f0926f92c8e08a80ce063c8c2086c7285e27f8a54e64907db1fd146531",
+		"0cb4d56dd3633219edc1240d4e6c0ddb4c1052e67e7d7b77f689723bd1dc3179",
+		"427d73f6eda5098d19292011570508984d0f25144f6135c23486540b6af432f9",
+		"c10371adaed23241ae08ada75bdad9dae939c91f02f3efcb998d9d55b604e525",
+		"60cc0d431f01e8b10b10191f81d1cdd061a4f2459fd521efc0da9372a19447f8",
+		"b932c1695ea8782febfb5ae3d5ced780759927dfd254a2c7ca807641be77c3c6",
+		"e017ccc8de32f9147dcb9bd470c6a30e13349c497b67d14cf044c03c37d47a51",
+		"2c2c003ed4f2064650c71ab9b28a3086dc82f053737b547928d12d691997a49c",
+		"65cada471ed0f7cf48edc6cd04bf74f899fa5eb0503ab78118ecf8dc9e6717d5",
+		"f165849ccdbd8013006218733fa08c3d1fb556e7add5c6afcbb457f89ea775cb",
+		"325f44051677896b2164a761907c48460ceb0740b4f90e976c5d36dbf8542c38",
+		"eb5deb0fde7d26d0c42c82958fb48bd21e9ab42a2b5a13843de48b8819cba90a",
+	}
+
+	// TXBlock538770 holds all the real world transactions from this block.
 	TXBlock538770 = []string{
 		"b35a13c56abcd6d84db0d776fcfd2e08cb8edfab1c182995f5c5bce449822760",
 		"2093a0f8504d07c1f5fcfd034ee445fd61748a0ee1c3b30cac478c2b0ecdf6f2",
