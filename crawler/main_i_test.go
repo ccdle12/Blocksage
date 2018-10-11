@@ -195,13 +195,3 @@ func (suite *MainIntegrationSuite) TestWriteMultipleTXs() {
 		}
 	}
 }
-
-// Test: how to test it?
-// [block{next: x}, block{next: nil}, block{next: y}]
-// 1. call Crawl(hash)
-// 2. call GetBlock(hash)
-// 3. If utils.EmptyString(block.NextBlockHash)
-// 4. sleep 1 minute
-// 6. Go Back to step 2.
-// 7. Else call WriteBlock(block)
-// 8. call Crawl(block.nextBlockHash)
