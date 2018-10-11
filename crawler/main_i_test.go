@@ -4,7 +4,6 @@ package main
 
 import (
 	"github.com/ccdle12/Blocksage/crawler/db-client"
-	"github.com/ccdle12/Blocksage/crawler/indexer"
 	"github.com/ccdle12/Blocksage/crawler/injector"
 	"github.com/ccdle12/Blocksage/crawler/node-client"
 	"github.com/ccdle12/Blocksage/crawler/test-utils"
@@ -197,69 +196,12 @@ func (suite *MainIntegrationSuite) TestWriteMultipleTXs() {
 	}
 }
 
-// TestIndexerGetBlock will test whether the Indexer can make a call via the node controller.
-func (suite *MainIntegrationSuite) TestIndexerGetBlock() {
-	// Create a controller to write to the DB using the test tables.
-	var testDBClient dbclient.Controller
-	testDBClient, err := dbclient.New(
-		dbclient.DBPort(injector.PostgresPort()),
-		dbclient.DBName(injector.PostgresDBName()),
-		dbclient.DBUser(injector.PostgresUserName()),
-		dbclient.DBHost(injector.PostgresDomain()),
-		dbclient.DBPassword(injector.PostgresPassword()),
-		dbclient.PostgresClient(),
-		dbclient.Test())
-
-	// Connect to the DB.
-	err = testDBClient.Connect()
-	defer testDBClient.Close()
-	suite.NoError(err, "There should be no error connecting to the DB")
-
-	// Create a node Controller to communicate with a Blockchain Node.
-	var nodeClient nodeclient.Controller
-	nodeClient = nodeclient.New(
-		injector.DefaultHTTPClient(),
-		injector.BTCDomain(),
-		injector.BTCUsername(),
-		injector.BTCPassword())
-
-	// Create an Indexer.
-	indexer := indexer.New(nodeClient, testDBClient)
-	block, err := indexer.GetBlock("0000000000000000001ca03d9e1dd30d2cf49e44ba1569c8819e56cef88b67d4")
-	suite.NoError(err, "There should be no error calling GetBlock()")
-	suite.NotNil(block, "Block should not be nil")
-	suite.Equal(block.Hash, "0000000000000000001ca03d9e1dd30d2cf49e44ba1569c8819e56cef88b67d4", "Retrived block should have the same block hash.")
-}
-
-// TestIndexerWrite will test that the indexer can write blocks and all
-// subsequent information from the block.
-func (suite *MainIntegrationSuite) TestCrawlReadWrite() {
-	// Create a controller to write to the DB using the test tables.
-	var testDBClient dbclient.Controller
-	testDBClient, err := dbclient.New(
-		dbclient.DBPort(injector.PostgresPort()),
-		dbclient.DBName(injector.PostgresDBName()),
-		dbclient.DBUser(injector.PostgresUserName()),
-		dbclient.DBHost(injector.PostgresDomain()),
-		dbclient.DBPassword(injector.PostgresPassword()),
-		dbclient.PostgresClient(),
-		dbclient.Test())
-
-	// Connect to the DB.
-	err = testDBClient.Connect()
-	defer testDBClient.Close()
-	suite.NoError(err, "There should be no error connecting to the DB")
-
-	// Create a node Controller to communicate with a Blockchain Node.
-	var nodeClient nodeclient.Controller
-	nodeClient = nodeclient.New(
-		injector.DefaultHTTPClient(),
-		injector.BTCDomain(),
-		injector.BTCUsername(),
-		injector.BTCPassword())
-
-	// Run the crawler.
-	indexer := indexer.New(nodeClient, testDBClient)
-	err = indexer.Write(testutils.ReducedBlock538770)
-	suite.NoError(err, "There should be no error when calling write on the indexer.")
-}
+// Test: how to test it?
+// [block{next: x}, block{next: nil}, block{next: y}]
+// 1. call Crawl(hash)
+// 2. call GetBlock(hash)
+// 3. If utils.EmptyString(block.NextBlockHash)
+// 4. sleep 1 minute
+// 6. Go Back to step 2.
+// 7. Else call WriteBlock(block)
+// 8. call Crawl(block.nextBlockHash)
