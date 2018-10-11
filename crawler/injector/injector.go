@@ -11,6 +11,7 @@ import (
 
 var (
 	defaultHTTPClient = &http.Client{Timeout: time.Duration(20 * time.Second)}
+	Block1Hash        = "000000006a625f06636b8bb6ac7b960a8d03705d1ace08b1a19da3fdcc99ddbd"
 )
 
 // NodeRequest will create a NodeRequest, needed to communicate client details from the
