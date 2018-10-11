@@ -1,9 +1,12 @@
 package indexer
 
 import (
+	"fmt"
 	"github.com/ccdle12/Blocksage/crawler/db-client"
 	"github.com/ccdle12/Blocksage/crawler/models"
 	"github.com/ccdle12/Blocksage/crawler/node-client"
+	"github.com/ccdle12/Blocksage/crawler/utils"
+	"time"
 )
 
 // Indexer is the struct that will hold the logic for the crawling process.
@@ -73,6 +76,44 @@ func (i *Indexer) write(block *models.Block) error {
 				return err
 			}
 		}
+	}
+
+	return nil
+}
+
+// Crawl will implement the logic needed to poll the node for the next block.
+func (i *Indexer) Crawl(hash string) error {
+	// Get a Block.
+	block, err := i.getBlock(hash)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("[Crawling... on Block: ]", block.Height)
+
+	// Check If the NextBlockHash is nil, sleep for 1 minute and
+	// call function again.
+	if utils.EmptyString(block.NextBlockHash) {
+		// Sleep for a minute.
+		time.Sleep(1 * time.Minute)
+
+		// Call the function again to to see if the latest block,
+		// now has a next block hash.
+		i.Crawl(block.Hash)
+	}
+
+	// TODO (ccdle12): What happens if a transaction is spent?
+	// I don't think Addresses are being indexed in terms of
+	// spent/unspent transactions.
+
+	// Write Block and all subsequent information from the block.
+	if err = i.write(block); err != nil {
+		return err
+	}
+
+	// Call the function again with the next block hash.
+	if err = i.Crawl(block.NextBlockHash); err != nil {
+		return err
 	}
 
 	return nil
